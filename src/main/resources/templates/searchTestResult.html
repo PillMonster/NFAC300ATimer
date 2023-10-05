@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>NF AC300A test result</title>
+	<script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/css/testResultStyle.css">
+</head>
+
+<body>
+
+<div class="leftDiv">
+
+	<form id="myForm"  onsubmit="return false;" method="post">
+
+		<table class="select-table">
+			
+			<tr>
+				<td class="widgets-table">機種:</td>
+			</tr>
+			<tr>
+				<td >  
+					<div class="select">
+						<select name="productType" id=productSelected onchange="changeValue(this.selectedIndex); submitForm();"></select>
+					</div>
+				</td>
+			</tr>
+			
+			<tr>
+				<td class="widgets-table">極數:</td>
+			</tr>
+			<tr>
+				<td >
+					<div class="select">
+						<select name="poleNum" id=poleNumSelected onchange="changeValue2(this.selectedIndex); submitForm();">
+							<option value="2P">2P</option>
+						    <option value="3P">3P</option>
+						    <option value="4P">4P</option>
+						</select>
+					</div>
+				</td>
+
+			</tr>
+			
+			<tr>
+				<td class="widgets-table">電流:</td>
+			</tr>
+			<tr>
+				<td >
+					<div class="select">
+						<select name="ammeter" id=ammeterSelected onchange="submitForm();"></select>
+					</div>
+				</td>
+
+			</tr>
+			
+			<tr>
+				<td class="widgets-table">試驗人員:</td>
+			</tr>
+			<tr>
+				<td >
+					<div class="select">
+						<select name="testPerson" id=testPersonSelected onchange="submitForm();"></select>
+					</div>
+				</td>
+
+			</tr>
+			
+			
+			<tr>
+				<td class="widgets-table">結果:</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="resule" id="resultPass" value="合格" onchange="submitForm()" checked/>
+					<label for="resultPass">合格</label><br>
+
+					<input type="radio" name="resule" id="resultFail" value="不合格" onchange="submitForm()"/>
+					<label for="resultFail">不合格</label><br>
+				</td>
+			</tr>
+			
+			<tr>
+				<td class="widgets-table">試驗日期:</td>
+			</tr>
+			<tr>
+				<td>
+			        <input type="date" id="startDateSelected" name="start-date" onchange="submitForm()"> ~ 
+			        <input type="date" id="endDateSelected" name="end-date" onchange="submitForm()">
+				</td>
+			</tr>
+			
+
+		</table>
+		
+		<!--  <input type="submit" value="搜尋"><br>-->
+
+	</form>
+</div>
+
+<div id="tableDiv" class="rightDiv"></div>
+
+<script type="text/javascript">
+	
+	var productTypeList = new Array(); // 建立初始陣列, 存放每一個產品
+	var ammeterList = new Array(); // 建立初始陣列, 存放每一個安培數
+	var testPersonList = new Array(); // 建立初始陣列, 存放每一個試驗人員
+	
+	var testDate = ""; // 建立初始變數, 存放試驗日期
+	
+	//自訂submitForm()方法, 利用ajax的serialize()方法, 可將表單內容送到後端
+	function submitForm() {
+		var formData = $('#myForm').serialize(); // 將表單序列化為字串
+		$.ajax({
+			url: './viewjsonProduct',
+		  	type: 'POST',
+		  	dataType:"json", // 接收資料格式 (後端需有標註@ResponseBody的方法)
+		  	data: formData,
+		  	success: function(data) {
+		  		updateData(data);
+		  	},
+		  	error: function(xhr, status, error) {
+			}
+		});	
+	}
+	
+	//AJAX向後端發送請求及接收重後端來的資料(此ajax方法為取得機種、日期、電流的陣列)
+	$.ajax({
+	    type:"GET",//請求方式
+	    url:"./viewjsonSelectList",//url代表向後端發送請求 (後端需有標註@GetMapping("/viewjsonSelectList")的方法)
+	    dataType:"json",//接收資料格式 (後端需有標註@ResponseBody的方法)
+	    async:false,//false為非同步
+	    success:function (result) {//接收後端來的資料
+	    	//productTypeList = result["productType"];
+	    	
+	    	productTypeList = result.productType;
+	    	ammeterList = result.ammeter;
+	    	testPersonList = result.testPerson;	
+	    	testDate = result.testDate;
+	    	console.log("productTypeList: " + productTypeList);
+	    	console.log("ammeterList: " + ammeterList);
+	    	console.log("testPersonList: " + testPersonList);
+	    	console.log("testDate: " + testDate);
+
+	    },
+	    error :function(errorMsg) {
+	        alert("請求後端資料失敗！(viewjsonSelectList)");
+	    }
+	});
+	
+	innerProduct();
+	innerAnneter();
+	innerTestPerson();
+	
+	// ===== 啟動伺服器時會自動更新機種下拉式選單 =====
+	function innerProduct(){
+		var inner = ""; // 建立空變數, 存放機種下拉選單的值>
+		var selectStr = "";
+		for(var i=0; i<productTypeList.length; i++){
+			/*if (productTypeList[i] == selectList[0]){
+				selectStr = "selected"; // 機種list內元素逐一篩選，如果有符合後端送來的值就給它'selected'
+			}
+			else{
+				selectStr = "";
+			}
+			inner = inner + "<option value=" + "'" + productTypeList[i] + "'" + selectStr + ">" + productTypeList[i] + "</option>";*/
+			inner = inner + "<option value=" + "'" + productTypeList[i] + "'"  + ">" + productTypeList[i] + "</option>";
+		}
+		var productSelect = document.getElementById("productSelected"); //取得機種下拉選單的元件名稱
+		productSelect.innerHTML = inner; //傳進 HTML 裡進行渲染
+	}
+	
+	function innerAnneter(){
+		var inner = ""; // 建立空變數, 存放機種下拉選單的值>
+		var selectStr = "";
+		for(var i=0; i<ammeterList.length; i++){
+			/*if (productTypeList[i] == selectList[0]){
+				selectStr = "selected"; // 機種list內元素逐一篩選，如果有符合後端送來的值就給它'selected'
+			}
+			else{
+				selectStr = "";
+			}
+			inner = inner + "<option value=" + "'" + productTypeList[i] + "'" + selectStr + ">" + productTypeList[i] + "</option>";*/
+			inner = inner + "<option value=" + "'" + ammeterList[i] + "'"  + ">" + ammeterList[i] + "</option>";
+		}
+		var ammeterSelect = document.getElementById("ammeterSelected"); //取得機種下拉選單的元件名稱
+		ammeterSelect.innerHTML = inner; //傳進 HTML 裡進行渲染
+	}
+	
+	function innerTestPerson(){
+		var inner = ""; // 建立空變數, 存放機種下拉選單的值>
+		var selectStr = "";
+		for(var i=0; i<testPersonList.length; i++){
+			/*if (productTypeList[i] == selectList[0]){
+				selectStr = "selected"; // 機種list內元素逐一篩選，如果有符合後端送來的值就給它'selected'
+			}
+			else{
+				selectStr = "";
+			}
+			inner = inner + "<option value=" + "'" + productTypeList[i] + "'" + selectStr + ">" + productTypeList[i] + "</option>";*/
+			inner = inner + "<option value=" + "'" + testPersonList[i] + "'"  + ">" + testPersonList[i] + "</option>";
+		}
+		var testPersonSelect = document.getElementById("testPersonSelected"); //取得機種下拉選單的元件名稱
+		testPersonSelect.innerHTML = inner; //傳進 HTML 裡進行渲染
+	}
+	
+	var startDateSelect = document.getElementById("startDateSelected"); //取得機種下拉選單的元件名稱
+	startDateSelect.value = "2023-09-09"; //傳進 HTML 裡進行渲染
+	var endDateSelect = document.getElementById("endDateSelected"); //取得機種下拉選單的元件名稱
+	endDateSelect.value = "2023-09-09"; //傳進 HTML 裡進行渲染
+	
+</script>
+
+</body>
+
+</html>

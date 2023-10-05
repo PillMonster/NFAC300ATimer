@@ -1,0 +1,176 @@
+.leftDiv{
+	float:left;
+	width: 18%;
+	padding: 5px 10px 5px 10px;
+	margin: 10px 0px 0px 0px;
+
+}
+
+.rightDiv{
+	float:right;
+	width: 80%;
+	padding: 0px 0px 0px 0px;
+	margin:10px 0px 0px 0px;
+}
+
+.submit-button{
+	background-color:#228B22;
+	color: white;
+	font-weight:bold;
+	font-size:16px;
+	text-align:center;
+	padding: 10px 24px;
+	border-width:1px;
+	border-color:#9cf #159 #159 #9cf;
+
+}
+
+.clean-button{
+	background-color:#20B2AA;
+	color: white;
+	font-weight:bold;
+	font-size:16px;
+	text-align:center;
+	padding: 10px 24px;
+	border-width:1px;
+	border-color:#9cf #159 #159 #9cf;
+
+}
+
+
+.edit-button{
+	background-color:#008CBA;
+	color:white;
+	font-weight:bold;
+	font-size:14px;
+	text-align:center;
+	padding: 3px 5px;
+	border-width:1px;
+	border-color:#9cf #159 #159 #9cf;
+	width: 50px;
+}
+
+.delete-button{
+	background-color:#f44336;
+	color:white;
+	font-weight:bold;
+	font-size:14px;
+	text-align:center;
+	padding: 3px 5px;
+	border-width:1px;
+	border-color:#9cf #159 #159 #9cf;
+	width: 50px;
+}
+
+.select select {
+  padding: 7px 40px 7px 7px;
+  width: 100%;
+  border: 1px solid #868687;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0 1px 3px -2px #9098a9;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+  transition: all 150ms ease;
+}
+.select select:required:invalid {
+  color: #5a667f;
+}
+.select select option {
+  color: #223254;
+}
+.select select option[value=""][disabled] {
+  display: none;
+}
+.select select:focus {
+  outline: none;
+  border-color: #07f;
+  box-shadow: 0 0 0 2px rgba(0,119,255,0.2);
+}
+.select select:hover + svg {
+  stroke: #07f;
+}
+
+.sprites {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+
+.styled-table {
+    border-collapse: collapse;
+    margin-left: auto; 
+    margin-right: auto;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 600px;
+    width: 80%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 10px 5px;
+    text-align: center;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #EEEEEE;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    
+}
+
+header, footer {
+  white-space: nowrap;
+}
+
+.select-table {
+  border: 1px solid  #ccc; /* 可选：添加边框以可视化容器 */
+  width: 100%;
+  overflow-y: auto;
+}
+
+.widgets-table {
+  border: 1px solid  #ccc; /* 可选：添加边框以可视化容器 */
+  width: 100px;
+  overflow-y: auto;
+}
+
+
+/* ========== 
+Chart styles 
+ ==========*/
+.chart-container {
+	margin-top: 10px;
+	padding: 0px 0px;
+	float:left;
+	text-align: center;
+	width:100%;
+	max-width:500px;	
+}
+
+

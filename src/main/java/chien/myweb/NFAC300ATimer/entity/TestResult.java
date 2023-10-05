@@ -13,9 +13,10 @@ public class TestResult {
 	private String trip130;
 	private String result;
 	private Timestamp finishedTestTime;
+	private String testMessage;
 	
 	public TestResult(int id, String productType, String poleNum, String ammeter, String testPerson, String trip105,
-			String trip130, String result, Timestamp finishedTestTime) {
+			String trip130, String result, Timestamp finishedTestTime, String testMessage) {
 		super();
 		this.id = id;
 		this.productType = productType;
@@ -26,6 +27,7 @@ public class TestResult {
 		this.trip130 = trip130;
 		this.result = result;
 		this.finishedTestTime = finishedTestTime;
+		this.testMessage = testMessage;
 	}
 
 	public int getId() {
@@ -99,6 +101,14 @@ public class TestResult {
 
 	public void setFinishedTestTime(Timestamp finishedTestTime) {
 		this.finishedTestTime = finishedTestTime;
+	}
+
+	public String getTestMessage() {
+		return testMessage;
+	}
+
+	public void setTestMessage(String testMessage) {
+		this.testMessage = testMessage;
 	}
 	
 }

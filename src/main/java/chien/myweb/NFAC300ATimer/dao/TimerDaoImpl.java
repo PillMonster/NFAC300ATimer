@@ -86,7 +86,8 @@ public class TimerDaoImpl implements TimerDao{
 						rs.getString("trip105"),
 						rs.getString("trip130"),
 						rs.getString("result"),
-						rs.getTimestamp("finishedTestTime"))
+						rs.getTimestamp("finishedTestTime"),
+						rs.getString("testMessage"))
 						
 		);
 	}
