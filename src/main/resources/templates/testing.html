@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>NF AC300A Testing</title>
+	<script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/css/timerStyle.css">
+</head>
+
+<body>
+<div class="testA-div-container">
+	<h3 class="titleInfo-div-container">A座</h3>
+	<div class="testInfo-div-container">
+		<div class="testInfo-div" id="productType"></div>
+		<div class="testInfo-div" id="poleNum"></div>
+		<div class="testInfo-div" id="ammeter"></div>
+		<div class="testInfo-div" id="testPerson"></div>
+	</div>
+	
+	<div class="testText-div-container">
+		<span class="testText-span">105%試驗</span>
+		<span class="testText-span">130%試驗</span>
+		<span class="testText-span">停止試驗</span>
+	</div>
+	
+	<div class="testRunState-div-container">
+		<span class="testStaticState-span" id="runState105">●</span>
+		<span class="testStaticState-span" id="runState130">●</span>
+		<span class="testStaticState-span" id="runStopState">●</span>
+	</div>
+	
+	<div class="testTimer-div" id="timer"></div>
+
+	<div class="testResult-div" id="tableDiv"></div>
+</div>
+
+<div class="testA-div-container" style="float:left;">
+	<h3 class="titleInfo-div-container">B座</h3>
+	<div class="testInfo-div-container">
+		<div class="testInfo-div" id="productType"></div>
+		<div class="testInfo-div" id="poleNum"></div>
+		<div class="testInfo-div" id="ammeter"></div>
+		<div class="testInfo-div" id="testPerson"></div>
+	</div>
+	
+	<div class="testText-div-container">
+		<span class="testText-span">105%試驗</span>
+		<span class="testText-span">130%試驗</span>
+		<span class="testText-span">停止試驗</span>
+	</div>
+	
+	<div class="testRunState-div-container">
+		<span class="testStaticState-span" id="runState105">●</span>
+		<span class="testStaticState-span" id="runState130">●</span>
+		<span class="testStaticState-span" id="runStopState">●</span>
+	</div>
+	
+	<div class="testTimer-div" id="timer"></div>
+
+	<div class="testResult-div" id="tableDiv"></div>
+</div>
+
+
+<div class="testA-div-container">
+	<h3 class="titleInfo-div-container">C座</h3>
+	<div class="testInfo-div-container">
+		<div class="testInfo-div" id="productType"></div>
+		<div class="testInfo-div" id="poleNum"></div>
+		<div class="testInfo-div" id="ammeter"></div>
+		<div class="testInfo-div" id="testPerson"></div>
+	</div>
+	
+	<div class="testText-div-container">
+		<span class="testText-span">105%試驗</span>
+		<span class="testText-span">130%試驗</span>
+		<span class="testText-span">停止試驗</span>
+	</div>
+	
+	<div class="testRunState-div-container">
+		<span class="testStaticState-span" id="runState105">●</span>
+		<span class="testStaticState-span" id="runState130">●</span>
+		<span class="testStaticState-span" id="runStopState">●</span>
+	</div>
+	
+	<div class="testTimer-div" id="timer"></div>
+
+	<div class="testResult-div" id="tableDiv"></div>
+</div>
+
+<script type="text/javascript">
+	
+	var sentMessage = "";
+	
+	setInterval(function(){
+		$.ajax({
+		    type:"GET",//請求方式
+		    url:"./viewjsonTestInfo",//url代表向後端發送請求 (後端需有標註@GetMapping("/viewjsonTestInfo")的方法)
+		    dataType:"json",//接收資料格式 (後端需有標註@ResponseBody的方法)
+		    async:false,//false為非同步
+		    success:function (data) {//接收後端來的資料
+		    	//console.log(data.productType);
+		    	document.getElementById("productType").innerHTML = "機種: " + data.productType;
+		    	document.getElementById("poleNum").innerHTML = "極數: " + data.poleNum;
+		    	document.getElementById("ammeter").innerHTML = "安培數: " + data.ammeter;
+		    	document.getElementById("testPerson").innerHTML = "試驗人員: " + data.testPerson; 
+		    	
+		    	//sentMessage = data.sentMessage;
+		    	//console.log(sentMessage);
+		    	
+		    	/*if (sentMessage === "Y"){
+		    		$.ajax({
+		    		    type:"POST",//請求方式
+		    		    url:"./sendLineBotMessage", //url代表向後端發送請求 (後端需有標註@GetMapping("/viewjsonRunState")的方法)
+		    		    //contentType: "application/json", //接收資料格式 (後端需有標註@ResponseBody的方法)
+		    		    //async:false,//false為非同步
+		    		    success:function (response) {//接收後端來的資料
+		    		    	console.log("LineBot發送成功!");
+	
+		    		    },
+		    		    error :function(errorMsg) {
+		    		        alert("請求後端資料失敗！(LineBot發送失敗!)");
+		    		    }
+	    			});
+		    		
+		    	}*/
+	
+		    },
+		    error :function(errorMsg) {
+		        alert("請求後端資料失敗！(viewjsonTestInfo)");
+		    }
+		});
+	}, 1000);
+	
+
+	setInterval(function(){
+		$.ajax({
+		    type:"GET",//請求方式
+		    url:"./viewjsonRunState",//url代表向後端發送請求 (後端需有標註@GetMapping("/viewjsonRunState")的方法)
+		    dataType:"json",//接收資料格式 (後端需有標註@ResponseBody的方法)
+		    async:false,//false為非同步
+		    success:function (data) {//接收後端來的資料
+		    	//console.log(data);
+		    	testState(data);
+		    	
+		    },
+		    error :function(errorMsg) {
+		        alert("請求後端資料失敗！(viewjsonRunState)");
+		    }
+		});
+   	}, 1000);	
+	
+	
+	setInterval(function(){
+		$.ajax({
+		    type:"GET",//請求方式
+		    url:"./viewjsonTimer",//url代表向後端發送請求 (後端需有標註@GetMapping("/viewjsonTimer")的方法)
+		    dataType:"json",//接收資料格式 (後端需有標註@ResponseBody的方法)
+		    async:false,//false為非同步
+		    success:function (data) {//接收後端來的資料
+		    	//console.log(data);
+		    	document.getElementById("timer").innerHTML = data;
+		    	
+		    },
+		    error :function(errorMsg) {
+		        alert("請求後端資料失敗！(viewjsonTimer)");
+		    }
+		});
+   	}, 1000);
+	
+	
+	setInterval(function(){
+		$.ajax({
+		    type:"GET",//請求方式
+		    url:"./viewjsonTestResult",//url代表向後端發送請求 (後端需有標註@GetMapping("/viewjsonTestResult")的方法)
+		    dataType:"json",//接收資料格式 (後端需有標註@ResponseBody的方法)
+		    async:false,//false為非同步
+		    success:function (data) {//接收後端來的資料
+		    	//console.log(data);
+		    	makeTestResultTable(data);
+		    },
+		    error :function(errorMsg) {
+		        alert("請求後端資料失敗！(viewjsonTestResult)");
+		    }
+		});
+	}, 1000);
+	
+	function testState(data){
+		//consloe.log("此方法有被執行");
+		var runState105 = data["runState105"];
+		var runState130 = data["runState130"];
+		var runStopState = data["runStopState"];
+
+		var runState105Element = document.getElementById("runState105");
+		var runState130Element = document.getElementById("runState130");
+		var runStopStateElement = document.getElementById("runStopState");
+
+		//runState105 = 1;
+		//runState130 = 1;
+		//runStopState = 1;
+		
+		if (runState105 === 1){
+			//console.log("數字等於1");
+			//runState105Element.textContent = "105%試驗中..";
+			//runState105Element.style.backgroundColor = "green";	
+			//runState105Element.style.color = "green";
+			runState105Element.className = "testRunState-span";
+		}
+		else{
+			//console.log("數字不等於1");
+			//runState105Element.textContent = "";	
+			//runState105Element.style.backgroundColor = "gray";
+			//runState105Element.style.color = "gray";	
+			runState105Element.className = "testStaticState-span";
+		}
+		
+		if (runState130 === 1){
+			//runState130Element.textContent = "130%試驗中..";
+			//runState130Element.style.backgroundColor = "green";
+			//runState130Element.style.color = "green";
+			runState130Element.className = "testRunState-span";
+		}
+		else{
+			//runState130Element.textContent = "";	
+			//runState130Element.style.backgroundColor = "gray";
+			//runState130Element.style.color = "gray";	
+			runState130Element.className = "testStaticState-span";
+		}
+		
+		if (runStopState === 1){
+			//runStopStateElement.textContent = "試驗停止";
+			//runStopStateElement.style.backgroundColor = "red";		
+			runStopStateElement.style.color = "red";
+		}
+		else{
+			//runStopStateElement.textContent = "";	
+			//runStopStateElement.style.backgroundColor = "gray";
+			runStopStateElement.style.color = "gray";		
+		}
+	}
+	
+	function makeTestResultTable(data){
+		//console.log("此方法有被執行");
+		var innerTable = "";
+    	innerTable += "<table id='testResultTable' class='data-table'>";
+    	innerTable += "<thead>";
+    	innerTable += "<tr align='center' style='background-color:Turquoise'>" +
+    					"<td>編號</td>" +
+					  	"<td>機種及規格</td>" +
+					   	"<td>測試人員</td>" +
+						"<td>105%跳脫</td>" +
+						"<td>130%跳脫</td>" +
+						"<td>結果</td>" +
+						"<td>完成時間</td>" +
+					   "</tr>";
+    	innerTable += "</thead>";
+    	innerTable += "<tbody>";
+    	for (var i = 0; i < data.length; i++) {
+    		innerTable += "<tr class='active-row'>";
+
+    		innerTable += "<td>" + data[i].id + "</td>";
+    		innerTable += "<td>" + data[i].productType + " " + data[i].poleNum + " " + data[i].ammeter + "</td>";
+    		innerTable += "<td>" + data[i].testPerson + "</td>";
+    		innerTable += "<td>" + data[i].trip105 + "</td>";
+    		innerTable += "<td>" + data[i].trip130 + "</td>";
+    		innerTable += "<td>" + data[i].result + "</td>";
+    		innerTable += "<td>" + formatDate(new Date(data[i].finishedTestTime)) + "</td>";
+    	}
+    	innerTable += "</tr>";
+    	innerTable += "</tbody>";
+    	innerTable += "</table>";
+    	document.getElementById("tableDiv").innerHTML = innerTable; 
+	}
+	
+	// ========== 時間格式轉換 ==========
+	function padTo2Digits(num) {
+		// 目標字串被填充到指定長度後，所得的新字串
+		// padStart(指定長度, '填充的值') ex: '3'.padStart(2, '0'); //03
+		return num.toString().padStart(2, '0');
+	}
+
+	function formatDate(date) {
+		return (
+			[
+				date.getFullYear(),
+				padTo2Digits(date.getMonth() + 1), //傳回值是一個0到11的正整數, 所以要+1
+				padTo2Digits(date.getDate()), 
+			].join('-') + //join()方法會將陣列或物件中所有的元素連接,並合併成一個新字串，回傳此新字串。 ['2022','06','02']->['2022-06-02']
+			' ' +
+			[
+				padTo2Digits(date.getHours()),
+				padTo2Digits(date.getMinutes()),
+				padTo2Digits(date.getSeconds()),
+			].join(':')
+		);
+	}
+
+	
+</script>
+
+</body>
+
+</html>

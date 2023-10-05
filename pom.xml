@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.15</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>chien.myweb</groupId>
+	<artifactId>NFAC300ATimer</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>NFAC300ATimer</name>
+	<description>NFAC300ATimer project for Spring Boot</description>
+	
+	<properties>
+		<java.version>11</java.version>
+	</properties>
+	
+	
+	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Thymeleaf Template Engine -->   
+		<dependency>         
+    		<groupId>org.springframework.boot</groupId>            
+    		<artifactId>spring-boot-starter-thymeleaf</artifactId>      
+		</dependency>
+		
+		<!-- JDBC driver -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
+		</dependency>
+		
+		<!-- JPA driver -->
+		<!--<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		-->
+		
+		
+		<!-- MSSQL database driver -->
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<!-- MySQL database driver -->
+		<!--<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>-->
+		
+		<!-- JSON -->
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20140107</version>
+		</dependency>
+		
+		<!-- Jackson相關依賴 -->
+	    <dependency>
+	        <groupId>com.fasterxml.jackson.core</groupId>
+	        <artifactId>jackson-databind</artifactId>
+	        <!-- 版本號可能會有所不同 -->
+	    </dependency>
+	    
+	    
+	    <dependency>
+			<groupId>com.linecorp.bot</groupId>
+			<artifactId>line-bot-spring-boot</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+
+  		<dependency>
+			<groupId>com.linecorp.bot</groupId>
+			<artifactId>line-bot-model</artifactId>
+			<version>3.2.0</version> <!-- 使用正确的版本 -->
+		</dependency>
+
+		<dependency>
+			<groupId>com.linecorp.bot</groupId>
+			<artifactId>line-bot-api-client</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.linecorp.bot</groupId>
+			<artifactId>line-bot-servlet</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>NFAC300ATimer</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

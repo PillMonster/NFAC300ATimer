@@ -1,0 +1,272 @@
+/* ===== A座 div ===== */
+.testA-div-container{
+	float:left;
+	
+	/* ===== 框線與背景顏色 ===== */
+	/*border: 1px solid  #ccc; /* 可选：添加边框以可视化容器 */
+	background: linear-gradient(45deg, #e1e1e1, #f7f7f7); /* 使用线性渐变背景 */
+	border-radius: 5px; /* 圆角 */
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); /* 阴影 */
+	
+	/* ===== 容器大小與距離 ===== */
+	justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+	height: 96vh; /* 让容器占据整个视口高度 */
+  	width: 32%; /* 設置容器的宽度 */
+    margin: 5px 10px 0px 0px; /* 上 右 下 左 */
+	padding: 0px 0px 0px 0px; /* 上 右 下 左 */
+}
+
+
+/* ===== 表頭 div ===== */
+.titleInfo-div-container{
+	text-align:center;
+ 	font-size: 26px;
+ 	
+ 	margin-left: auto; 
+    margin-right: auto;
+    margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+/* ===== 測試內容 div ===== */
+.testInfo-div-container{
+	/* ===== 框線與背景顏色 ===== */
+	/*border: 1px solid  #ccc; /* 可选：添加边框以可视化容器 */
+
+	background:Thistle; 
+	/*background: linear-gradient(45deg, #e1e1e1, #f7f7f7); /* 使用线性渐变背景 */
+	border-radius: 5px; /* 圆角 */
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1); /* 阴影 */
+	padding: 20px;
+	/*text-align: center;*/
+	font-size: 16px;
+	color: #333;
+	
+	/* ===== 容器大小與距離 ===== */
+	display: flex;
+  	flex-direction: column;
+  	
+	height: 20%; /* 设置容器高度 */
+  	width: 100%; /* 設置容器的宽度 */
+	margin: 0px 0px 20px 0px; /* 上 右 下 左 */
+	padding: 0px 0px 0px 0px; /* 上 右 下 左 */
+}
+
+/* ===== 每一個測試子項 div ===== */
+.testInfo-div{
+	/* ===== 框線與背景顏色 ===== */
+	/*border: 1px solid  #ccc; /* 可选：添加边框以可视化容器 */
+	font-size:22px;
+	
+	/* ===== 容器大小與距離 ===== */
+	flex: 1; /* 平均分配高度 */
+	height: 100%; /* 设置容器高度 */
+  	width: 100%; /* 设置子元素的宽度为容器宽度的50% */
+	margin: 0px 0px 0px 10px; /* 上 右 下 左 */
+	padding: 0px 0px 0px 0px; /* 上 右 下 左 */
+}
+
+/* ===== 文字 div ===== */
+.testText-div-container{
+	/* ===== 框線與背景顏色 ===== */
+	/*border: 1px solid  #ccc; /* 可选：添加边框以可视化容器 */
+	background-color: LightBlue; /* 背景文字 */
+	display: flex;
+    
+    /* ===== 容器大小與距離 ===== */
+	height: 4%; /* 设置容器高度 */
+  	width: 100%; /* 填满外层 span 的宽度 */
+    margin: 5px 0px px 0px; /* 上 右 下 左 */
+	padding: 0px 0px 0px 0px; /* 上 右 下 左 */
+}
+
+/* ===== 每一個文字 span ===== */
+.testText-span{
+	
+	/* ===== 框線與背景顏色 ===== */
+	/*border: 1px solid  #ccc; /* 可选：添加边框以可视化容器 */
+	/*background-color: Gray;*/
+	
+	/* ===== 文字顏色與大小 ===== */
+	/*color: white; /* 文字顏色:白 */
+	font-size: 36px;
+	
+	/* ===== 文字垂直與水平置中 ===== */
+	flex: 1;  /* 将子元素平均占据剩余的空间 */
+	display: flex; /* 使内层 span 变成块级元素 */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+
+	/* ===== 容器大小與距離 ===== */
+	height: 100%; /* 设置容器高度 */
+  	width: 95%; /* 設置容器的宽度 */
+  	
+	margin: 0px 0px 0px 0px; /* 上 右 下 左 */
+	padding: 0px 0px 0px 0px; /* 上 右 下 左 */
+
+    /*border-radius: 5px; /* 圓角 */	
+
+}
+
+/* ===== 燈號 div ===== */
+.testRunState-div-container{
+	/* ===== 框線與背景顏色 ===== */
+	/*border: 1px solid green; /* 可选：添加边框以可视化容器 */
+	background-color: LightBlue; /* 背景文字 */
+	display: flex;
+    
+    /* ===== 容器大小與距離 ===== */
+	height: 10%; /* 设置容器高度 */
+  	width: 100%; /* 填满外层 span 的宽度 */
+    margin: 0px 0px 10px 0px; /* 上 右 下 左 */
+	padding: 0px 0px 10px 0px; /* 上 右 下 左 */
+}
+
+/* ===== 每一個燈號 span ===== */
+.testStaticState-span{
+	
+	/* ===== 框線與背景顏色 ===== */
+	/*border: 1px solid  #ccc; /* 可选：添加边框以可视化容器 */
+	/*background-color: Gray;*/	
+	
+	/* ===== 文字顏色與大小 ===== */
+	color: gray; /* 文字顏色:灰 */
+	font-size: 150px;
+	
+	/* ===== 文字垂直與水平置中 ===== */
+	flex: 1;  /* 将子元素平均占据剩余的空间 */
+	display: flex; /* 使内层 span 变成块级元素 */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+
+	/* ===== 容器大小與距離 ===== */
+	height: 100%; /* 设置容器高度 */
+  	width: 100%; /* 設置容器的宽度 */
+  	
+	margin: 0px 0px 0px 0px; /* 上 右 下 左 */
+	padding: 0px 0px 10px 0px; /* 上 右 下 左 */
+
+    /*border-radius: 5px; /* 圓角 */ 
+}
+
+.testRunState-span{
+	
+	/* ===== 框線與背景顏色 ===== */
+	/*border: 1px solid  #ccc; /* 可选：添加边框以可视化容器 */
+	/*background-color: Gray;*/	
+	
+	/* ===== 文字顏色與大小 ===== */
+	color: green; /* 文字顏色:灰 */
+	font-size: 150px;
+	
+	/* ===== 文字垂直與水平置中 ===== */
+	flex: 1;  /* 将子元素平均占据剩余的空间 */
+	display: flex; /* 使内层 span 变成块级元素 */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+
+	/* ===== 容器大小與距離 ===== */
+	height: 100%; /* 设置容器高度 */
+  	width: 100%; /* 設置容器的宽度 */
+  	
+	margin: 0px 0px 0px 0px; /* 上 右 下 左 */
+	padding: 0px 0px 10px 0px; /* 上 右 下 左 */
+
+    /*border-radius: 5px; /* 圓角 */ 
+	
+	text-shadow: 2px 2px 0px #333, -2px -2px 0px #333; /* 创建立体效果 */
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* 初始阴影样式 */
+    animation: shadowAnimation 1s infinite alternate; /* 应用动画 */
+}
+
+/* ===== timer div ===== */
+.testTimer-div{
+	
+	/* ===== 框線與背景顏色 ===== */
+	/*border: 1px solid  #ccc; /* 可选：添加边框以可视化容器 */
+	background-color: black;
+	
+	/* ===== 文字顏色與大小 ===== */
+	color: white; /* 文字顏色:白 */
+	font-size:50px;
+	
+	/* ===== 文字垂直與水平置中 ===== */
+	display: flex;
+	justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+	
+	/* ===== 容器大小與距離 ===== */
+	height: 8%;  /* 设置容器高度 */
+    width: 100%; /* 設置容器的宽度 */
+ 
+	margin: 5px 0px 5px 0px; /* 上 右 下 左 */
+	padding: 0px 0px 0px 0px; /* 上 右 下 左 */
+}
+
+/* ===== 測試結果表格 div ===== */
+.testResult-div{
+	
+	/* ===== 框線與背景顏色 ===== */
+	/*border: 1px solid green; /* 可选：添加边框以可视化容器 */
+
+	
+	/* ===== 容器大小與距離 ===== */
+	height: 50%;  /* 设置容器高度 */
+    width: 100%; /* 設置容器的宽度 */
+ 
+	margin: 10px 0px 0px 0px; /* 上 右 下 左 */
+	padding: 0px 0px 0px 0px; /* 上 右 下 左 */
+}
+
+/* ===== 表格Style ===== */
+.data-table {
+	
+    margin-left: auto; 
+    margin-right: auto;
+    font-size: 16px;
+    font-family: sans-serif;
+    /*min-width: 600px;*/
+    width: 100%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); /* 添加陰影效果 */
+    text-align: center;
+    
+    border-collapse: separate; /* 使用独立边框模型 */
+   	border-spacing: 0; /* 设置单元格间距为0 */
+   	background-color: #ffffff;
+   	border-radius: 5px; /* 圆角边框 */
+}
+
+.data-table th,
+.data-table td {
+    padding: 2px 2px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+    padding: 2px 2px;
+}
+
+.data-table th {
+   	background-color: #f1f1f1;
+   	color: #333;
+}
+.data-table tbody tr:nth-child(even) {
+   	background-color: #f9f9f9;
+}
+
+
+/* 创建动画关键帧 */
+@keyframes shadowAnimation {
+    0% {
+        filter: brightness(1); /* 初始明暗度（降低明度） */
+        transform: translateY(0); /* 初始位置 */
+    }
+    100% {
+        filter: brightness(0.8); /* 最终明暗度（增加明度） */
+        transform: translateY(-10px); /* 初始位置 */
+    }
+}
