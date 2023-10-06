@@ -1,6 +1,7 @@
 package chien.myweb.NFAC300ATimer.dao;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ public class TestResultDaoImpl implements TestResultDao{
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+
 	
 	@Override
 	public List<String> findProduct() {
@@ -34,7 +36,7 @@ public class TestResultDaoImpl implements TestResultDao{
 	public List<String> findAmmeter() {
 		String sql = "select distinct ammeter from testResult;";
 		List<String> ammeterList = jdbcTemplate.queryForList(sql, String.class);
-		Collections.sort(ammeterList);
+		Collections.sort(ammeterList, new CustomComparator());
 		return ammeterList;
 	}
 	@Override
@@ -81,4 +83,14 @@ public class TestResultDaoImpl implements TestResultDao{
 						rs.getString("testMessage"))
 		);
 	}
+	
+	static class CustomComparator implements Comparator<String> {
+        @Override
+        public int compare(String s1, String s2) {
+            // 提取字符串中的数字部分进行比较
+            int num1 = Integer.parseInt(s1.replaceAll("[^0-9]", ""));
+            int num2 = Integer.parseInt(s2.replaceAll("[^0-9]", ""));
+            return Integer.compare(num1, num2);
+        }
+    }
 }
