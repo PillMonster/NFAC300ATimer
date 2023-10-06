@@ -90,11 +90,11 @@ public class TestResultController {
 		return jsonString;
 	}*/
 	
-	@PostMapping("/viewjsonFindTestResult")
+	@PostMapping(value = "/viewjsonTestResult", consumes = "application/x-www-form-urlencoded;charset=UTF-8")
 	@ResponseBody
-	public List<TestResult> jsonFindTestResult(@RequestBody TestResult testResult){
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		System.out.println("執行1");
+	//public List<TestResult> jsonTestResult(HttpServletRequest request){
+	public List<TestResult> jsonTestResult(@RequestBody TestResult testResult){
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // 創建一個 SimpleDateFormat 來定義日期時間的格式
 		
 		String productType = testResult.getProductType();
 		System.out.println("productType: " + productType);
@@ -111,29 +111,28 @@ public class TestResultController {
 		String result = testResult.getResult();
 		System.out.println("result: " + result);
 		
-		String startDateTime =  dateFormat.format(testResult.getFinishedTestTime());
+		String startDateTime =  dateFormat.format(testResult.getFinishedTestTime());  // 使用 dateFormat format方法來格式化日期時間
 		System.out.println("startDateTime: " + startDateTime);
 		
-		String endDateTime = dateFormat.format(testResult.getFinishedTestTime());
+		String endDateTime = dateFormat.format(testResult.getFinishedTestTime()); // 使用 dateFormat format方法來格式化日期時間
 		System.out.println("endDateTime: " + endDateTime);
-		
-		/*System.out.println("productType: " + productType);
-		System.out.println("poleNum: " + poleNum);
-		System.out.println("ammeter: " + ammeter);
-		System.out.println("testPerson: " + testPerson);
-		System.out.println("result: " + result);
-		System.out.println("startDateTime: " + startDateTime);
-		System.out.println("endDateTime: " + endDateTime);
-		*/
-		//String endDateTime = request.getParameter("endDateTime");
-		
+
 		/*String productType = request.getParameter("pyoductType");
 		String poleNum = request.getParameter("poleNum");
 		String ammeter = request.getParameter("ammeter");
 		String testPerson = request.getParameter("testPerson");
 		String result = request.getParameter("result");
-		String startDateTime = request.getParameter("startDateTime");
-		String endDateTime = request.getParameter("endDateTime");*/
+		String startDateTime = "2023-09-08";
+		String endDateTime = "2023-09-30";
+		
+		System.out.println("productType: " + productType);
+		System.out.println("poleNum: " + poleNum);
+		System.out.println("ammeter: " + ammeter);
+		System.out.println("testPerson: " + testPerson);
+		System.out.println("result: " + result);
+		System.out.println("startDateTime: " + startDateTime);
+		System.out.println("endDateTime: " + endDateTime);*/
+		
 	
 		List<TestResult> testResultList = testResultService.findTestResult(productType, poleNum, ammeter, testPerson, result, startDateTime, endDateTime);
 		
