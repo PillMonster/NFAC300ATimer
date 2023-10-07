@@ -20,8 +20,8 @@
 			</tr>
 			<tr>
 				<td >  
-					<div class="select">
-						<select name="productType" id=productSelected onchange="submitForm();"></select>
+					<div class="select" id="productSelected">
+						
 					</div>
 				</td>
 			</tr>
@@ -32,11 +32,9 @@
 			<tr>
 				<td >
 					<div class="select">
-						<select name="poleNum" id=poleNumSelected onchange="submitForm();">
-							<option value="2P">2P</option>
-						    <option value="3P">3P</option>
-						    <option value="4P">4P</option>
-						</select>
+						<input type="checkbox" name="poleNum" id=poleNumSelected onchange="submitForm();">2P<br>
+						<input type="checkbox" name="poleNum" id=poleNumSelected onchange="submitForm();">3P<br>
+						<input type="checkbox" name="poleNum" id=poleNumSelected onchange="submitForm();">4P<br>
 					</div>
 				</td>
 
@@ -47,8 +45,7 @@
 			</tr>
 			<tr>
 				<td >
-					<div class="select">
-						<select name="ammeter" id=ammeterSelected onchange="submitForm();"></select>
+					<div class="select" id="ammeterSelected">
 					</div>
 				</td>
 
@@ -59,8 +56,7 @@
 			</tr>
 			<tr>
 				<td >
-					<div class="select">
-						<select name="testPerson" id=testPersonSelected onchange="submitForm();"></select>
+					<div class="select" id="testPersonSelected">
 					</div>
 				</td>
 
@@ -72,11 +68,8 @@
 			</tr>
 			<tr>
 				<td>
-					<input type="radio" name="result" id="resultPass" value="合格" onchange="submitForm()" checked/>
-					<label for="resultPass">合格</label><br>
-
-					<input type="radio" name="result" id="resultFail" value="不合格" onchange="submitForm()"/>
-					<label for="resultFail">不合格</label><br>
+					<input type="checkbox"  name="result" id="resultPass" value="合格" onchange="submitForm()" checked/>合格<br>
+					<input type="checkbox" name="result" id="resultFail" value="不合格" onchange="submitForm()"/>不合格<br>
 				</td>
 			</tr>
 			
@@ -191,6 +184,7 @@
 	innerAnneter();
 	innerTestPerson();
 	
+	//<input type="checkbox" name="productType" id=productSelected onchange="submitForm();">
 	// ===== 啟動伺服器時會自動更新機種下拉式選單 =====
 	function innerProduct(){
 		var inner = ""; // 建立空變數, 存放機種下拉選單的值>
@@ -203,7 +197,7 @@
 				selectStr = "";
 			}
 			inner = inner + "<option value=" + "'" + productTypeList[i] + "'" + selectStr + ">" + productTypeList[i] + "</option>";*/
-			inner = inner + "<option value=" + "'" + productTypeList[i] + "'"  + ">" + productTypeList[i] + "</option>";
+			inner = inner + "<label><input type='checkbox' name='productType' onchange='submitForm();'>" +  productTypeList[i] + "</label><br>";
 		}
 		var productSelect = document.getElementById("productSelected"); //取得機種下拉選單的元件名稱
 		productSelect.innerHTML = inner; //傳進 HTML 裡進行渲染
@@ -220,7 +214,8 @@
 				selectStr = "";
 			}
 			inner = inner + "<option value=" + "'" + productTypeList[i] + "'" + selectStr + ">" + productTypeList[i] + "</option>";*/
-			inner = inner + "<option value=" + "'" + ammeterList[i] + "'"  + ">" + ammeterList[i] + "</option>";
+			//inner = inner + "<option value=" + "'" + ammeterList[i] + "'"  + ">" + ammeterList[i] + "</option>";
+			inner = inner + "<label><input type='checkbox' name='ammeter' onchange='submitForm();'>" + ammeterList[i] + "</label><br>";
 		}
 		var ammeterSelect = document.getElementById("ammeterSelected"); //取得機種下拉選單的元件名稱
 		ammeterSelect.innerHTML = inner; //傳進 HTML 裡進行渲染
@@ -237,7 +232,8 @@
 				selectStr = "";
 			}
 			inner = inner + "<option value=" + "'" + productTypeList[i] + "'" + selectStr + ">" + productTypeList[i] + "</option>";*/
-			inner = inner + "<option value=" + "'" + testPersonList[i] + "'"  + ">" + testPersonList[i] + "</option>";
+			//inner = inner + "<option value=" + "'" + testPersonList[i] + "'"  + ">" + testPersonList[i] + "</option>";
+			inner = inner + "<label><input type='checkbox' name='testPerson' onchange='submitForm();'>" + testPersonList[i] + "</label><br>";
 		}
 		var testPersonSelect = document.getElementById("testPersonSelected"); //取得機種下拉選單的元件名稱
 		testPersonSelect.innerHTML = inner; //傳進 HTML 裡進行渲染
