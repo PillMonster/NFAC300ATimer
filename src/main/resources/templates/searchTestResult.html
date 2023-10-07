@@ -21,7 +21,7 @@
 			<tr>
 				<td >  
 					<div class="select">
-						<select name="productType" id=productSelected onchange="changeValue(this.selectedIndex); submitForm();"></select>
+						<select name="productType" id=productSelected onchange="submitForm();"></select>
 					</div>
 				</td>
 			</tr>
@@ -32,7 +32,7 @@
 			<tr>
 				<td >
 					<div class="select">
-						<select name="poleNum" id=poleNumSelected onchange="changeValue2(this.selectedIndex); submitForm();">
+						<select name="poleNum" id=poleNumSelected onchange="submitForm();">
 							<option value="2P">2P</option>
 						    <option value="3P">3P</option>
 						    <option value="4P">4P</option>
@@ -110,14 +110,16 @@
 	
 	//自訂submitForm()方法, 利用ajax的serialize()方法, 可將表單內容送到後端
 	function submitForm() {
-		var formData = $('#myForm').serialize(); // 將表單序列化為字串
+		var formData = $("#myForm").serialize(); // 將表單序列化為字串
 		$.ajax({
-			url: './viewjsonProduct',
+			url: "./viewjsonTestResult",
 		  	type: 'POST',
+		  	contentType: "application/x-www-form-urlencoded; charset=UTF-8", // 後端如果要以List接收, 這行必須要開
 		  	dataType:"json", // 接收資料格式 (後端需有標註@ResponseBody的方法)
 		  	data: formData,
 		  	success: function(data) {
 		  		updateData(data);
+		  		console.log(data);
 		  	},
 		  	error: function(xhr, status, error) {
 			}
@@ -147,6 +149,37 @@
 	        alert("請求後端資料失敗！(viewjsonSelectList)");
 	    }
 	});
+	
+	// 自訂更新資料的函式, 可從後端接收來的數據, 渲染到html讀table上
+    function updateData(data){
+    	var innerTable = "";
+    	innerTable += "<table border='1' class='styled-table'>";
+    	//table title
+    	innerTable += "<thead>";
+    	innerTable += "<tr><td>編號</td><td>機種</td><td>極數</td><td>安培數</td><td>試驗人員</td><td>105%不跳脫</td><td>130%跳脫</td><td>結果</td><td>完成時間</td><td>備註</td>";
+    	innerTable += "</thead>";
+    	innerTable += "<tbody>";
+    	for (var i = 0; i < data.length; i++) {
+    		innerTable += "<tr class='active-row'>";
+
+    		innerTable += "<td>" + data[i].id + "</td>";
+    		innerTable += "<td>" + data[i].productType + "</td>";
+    		innerTable += "<td>" + data[i].poleNum + "</td>";
+    		innerTable += "<td>" + data[i].ammeter + "</td>";
+    		innerTable += "<td>" + data[i].testPerson + "</td>";
+    		innerTable += "<td>" + data[i].trip105 + "</td>";
+    		innerTable += "<td>" + data[i].trip130 + "</td>";
+    		innerTable += "<td>" + data[i].result + "</td>";
+    		innerTable += "<td>" + formatDate(new Date(data[i].creatDateTime)) + "</td>";
+    		innerTable += "<td>" + data[i].testMessage + "</td>";
+    	}
+    	innerTable += "</tr>";
+    	innerTable += "</tbody>";
+    	innerTable += "</table>";
+    	document.getElementById("tableDiv").innerHTML = innerTable;
+    	
+    }
+	
 	
 	innerProduct();
 	innerAnneter();
@@ -208,6 +241,30 @@
 	startDateSelect.value = "2023-09-09"; //傳進 HTML 裡進行渲染
 	var endDateSelect = document.getElementById("endDateSelected"); //取得機種下拉選單的元件名稱
 	endDateSelect.value = "2023-09-09"; //傳進 HTML 裡進行渲染
+	
+	
+	// ========== 時間格式轉換 ==========
+	function padTo2Digits(num) {
+		// 目標字串被填充到指定長度後，所得的新字串
+		// padStart(指定長度, '填充的值') ex: '3'.padStart(2, '0'); //03
+		return num.toString().padStart(2, '0');
+	}
+
+	function formatDate(date) {
+		return (
+			[
+				date.getFullYear(),
+				padTo2Digits(date.getMonth() + 1), //傳回值是一個0到11的正整數, 所以要+1
+				padTo2Digits(date.getDate()), 
+			].join('-') + //join()方法會將陣列或物件中所有的元素連接,並合併成一個新字串，回傳此新字串。 ['2022','06','02']->['2022-06-02']
+			' ' +
+			[
+				padTo2Digits(date.getHours()),
+				padTo2Digits(date.getMinutes()),
+				padTo2Digits(date.getSeconds()),
+			].join(':')
+		);
+	}
 	
 </script>
 
