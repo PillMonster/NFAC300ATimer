@@ -72,10 +72,10 @@
 			</tr>
 			<tr>
 				<td>
-					<input type="radio" name="resule" id="resultPass" value="合格" onchange="submitForm()" checked/>
+					<input type="radio" name="result" id="resultPass" value="合格" onchange="submitForm()" checked/>
 					<label for="resultPass">合格</label><br>
 
-					<input type="radio" name="resule" id="resultFail" value="不合格" onchange="submitForm()"/>
+					<input type="radio" name="result" id="resultFail" value="不合格" onchange="submitForm()"/>
 					<label for="resultFail">不合格</label><br>
 				</td>
 			</tr>
@@ -101,6 +101,10 @@
 <div id="tableDiv" class="rightDiv"></div>
 
 <script type="text/javascript">
+
+	$(document).ready(function() {
+		submitForm();
+	});
 	
 	var productTypeList = new Array(); // 建立初始陣列, 存放每一個產品
 	var ammeterList = new Array(); // 建立初始陣列, 存放每一個安培數
@@ -110,16 +114,18 @@
 	
 	//自訂submitForm()方法, 利用ajax的serialize()方法, 可將表單內容送到後端
 	function submitForm() {
-		var formData = $("#myForm").serialize(); // 將表單序列化為字串
+		var formData = $("#myForm").serialize(); // $("#myForm") ->取得表單元素id的值, serialize() ->並將其序列化轉為字串
+		console.log(formData);
 		$.ajax({
 			url: "./viewjsonTestResult",
 		  	type: 'POST',
-		  	contentType: "application/x-www-form-urlencoded; charset=UTF-8", // 後端如果要以List接收, 這行必須要開
+		  	//contentType: "application/json", // 後端如果要以List接收, 這行必須要開
 		  	dataType:"json", // 接收資料格式 (後端需有標註@ResponseBody的方法)
 		  	data: formData,
 		  	success: function(data) {
-		  		updateData(data);
 		  		console.log(data);
+		  		updateData(data);
+		  		
 		  	},
 		  	error: function(xhr, status, error) {
 			}
@@ -170,7 +176,7 @@
     		innerTable += "<td>" + data[i].trip105 + "</td>";
     		innerTable += "<td>" + data[i].trip130 + "</td>";
     		innerTable += "<td>" + data[i].result + "</td>";
-    		innerTable += "<td>" + formatDate(new Date(data[i].creatDateTime)) + "</td>";
+    		innerTable += "<td>" + formatDate(new Date(data[i].finishedTestTime)) + "</td>";
     		innerTable += "<td>" + data[i].testMessage + "</td>";
     	}
     	innerTable += "</tr>";

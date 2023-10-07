@@ -90,40 +90,17 @@ public class TestResultController {
 		return jsonString;
 	}*/
 	
-	@PostMapping(value = "/viewjsonTestResult", consumes = "application/x-www-form-urlencoded;charset=UTF-8")
+	@PostMapping(value = "/viewjsonTestResult")
 	@ResponseBody
-	//public List<TestResult> jsonTestResult(HttpServletRequest request){
-	public List<TestResult> jsonTestResult(@RequestBody TestResult testResult){
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // 創建一個 SimpleDateFormat 來定義日期時間的格式
-		
-		String productType = testResult.getProductType();
-		System.out.println("productType: " + productType);
-		
-		String poleNum = testResult.getPoleNum();
-		System.out.println("poleNum: " + poleNum);
-		
-		String ammeter = testResult.getAmmeter();	
-		System.out.println("ammeter: " + ammeter);
-		
-		String testPerson = testResult.getTestPerson();
-		System.out.println("testPerson: " + testPerson);
-		
-		String result = testResult.getResult();
-		System.out.println("result: " + result);
-		
-		String startDateTime =  dateFormat.format(testResult.getFinishedTestTime());  // 使用 dateFormat format方法來格式化日期時間
-		System.out.println("startDateTime: " + startDateTime);
-		
-		String endDateTime = dateFormat.format(testResult.getFinishedTestTime()); // 使用 dateFormat format方法來格式化日期時間
-		System.out.println("endDateTime: " + endDateTime);
+	public List<TestResult> jsonTestResult(HttpServletRequest request){
 
-		/*String productType = request.getParameter("pyoductType");
+		String productType = request.getParameter("productType");
 		String poleNum = request.getParameter("poleNum");
 		String ammeter = request.getParameter("ammeter");
 		String testPerson = request.getParameter("testPerson");
 		String result = request.getParameter("result");
-		String startDateTime = "2023-09-08";
-		String endDateTime = "2023-09-30";
+		String startDateTime = request.getParameter("start-date");
+		String endDateTime = request.getParameter("end-date");
 		
 		System.out.println("productType: " + productType);
 		System.out.println("poleNum: " + poleNum);
@@ -131,8 +108,7 @@ public class TestResultController {
 		System.out.println("testPerson: " + testPerson);
 		System.out.println("result: " + result);
 		System.out.println("startDateTime: " + startDateTime);
-		System.out.println("endDateTime: " + endDateTime);*/
-		
+		System.out.println("endDateTime: " + endDateTime);
 	
 		List<TestResult> testResultList = testResultService.findTestResult(productType, poleNum, ammeter, testPerson, result, startDateTime, endDateTime);
 		
@@ -146,7 +122,6 @@ public class TestResultController {
 			
 		return testResultList;
 	}
-	
 	
 	
 	@GetMapping("/searchTestResult")
