@@ -29,7 +29,7 @@ public class TestResultServiceImpl implements TestResultService{
 	}
 	
 	@Override
-	public String findTestDate() {
+	public List<String> findTestDate() {
 		return testResultDao.findTestDate();
 	}
 	

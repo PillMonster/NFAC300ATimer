@@ -20,9 +20,7 @@
 			</tr>
 			<tr>
 				<td >  
-					<div class="select" id="productSelected">
-						
-					</div>
+					<div class="select" id="productDiv"></div>
 				</td>
 			</tr>
 			
@@ -31,22 +29,21 @@
 			</tr>
 			<tr>
 				<td >
-					<div class="select">
-						<input type="checkbox" name="poleNum" id=poleNumSelected onchange="submitForm();">2P<br>
-						<input type="checkbox" name="poleNum" id=poleNumSelected onchange="submitForm();">3P<br>
-						<input type="checkbox" name="poleNum" id=poleNumSelected onchange="submitForm();">4P<br>
+					<div class="select" id="poleNumDiv">
+						<label><input type="checkbox" name="poleNum" id=poleNumSelected value="2P" onchange="submitForm();">2P</label><br>
+						<label><input type="checkbox" name="poleNum" id=poleNumSelected value="3P" onchange="submitForm();">3P</label><br>
+						<label><input type="checkbox" name="poleNum" id=poleNumSelected value="4P" onchange="submitForm();">4P</label><br>
 					</div>
 				</td>
 
 			</tr>
 			
 			<tr>
-				<td class="widgets-table">電流:</td>
+				<td class="widgets-table">安培數:</td>
 			</tr>
 			<tr>
 				<td >
-					<div class="select" id="ammeterSelected">
-					</div>
+					<div class="select" id="ammeterDiv"></div>
 				</td>
 
 			</tr>
@@ -56,20 +53,21 @@
 			</tr>
 			<tr>
 				<td >
-					<div class="select" id="testPersonSelected">
+					<div class="select" id="testPersonDiv">
 					</div>
 				</td>
 
 			</tr>
-			
 			
 			<tr>
 				<td class="widgets-table">結果:</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="checkbox"  name="result" id="resultPass" value="合格" onchange="submitForm()" checked/>合格<br>
-					<input type="checkbox" name="result" id="resultFail" value="不合格" onchange="submitForm()"/>不合格<br>
+					<div class="select" id="resultDiv">
+						<label><input type="checkbox"  name="result" id="resultPass" value="合格" onchange="submitForm()" checked/>合格</label><br>
+						<label><input type="checkbox" name="result" id="resultFail" value="不合格" onchange="submitForm()"/>不合格</label><br>
+					</div>
 				</td>
 			</tr>
 			
@@ -103,12 +101,101 @@
 	var ammeterList = new Array(); // 建立初始陣列, 存放每一個安培數
 	var testPersonList = new Array(); // 建立初始陣列, 存放每一個試驗人員
 	
-	var testDate = ""; // 建立初始變數, 存放試驗日期
+	
+	var finishedTestDate = new Array();; // 建立初始變數, 存放試驗日期
+	
+	
 	
 	//自訂submitForm()方法, 利用ajax的serialize()方法, 可將表單內容送到後端
 	function submitForm() {
+		
+		var productSelected = new Array(); // 建立初始陣列, 存放選取後的產品
+		var ammeterSelected = new Array(); // 建立初始陣列, 存放選取後的安培數
+		var testPersonSelected = new Array(); // 建立初始陣列, 存放選取後的測試人員
+		var poleNumSelected = new Array(); // 建立初始陣列, 存放選取後的極數
+		var resultSelected = new Array(); // 建立初始陣列, 存放選取後的結果
+		var finishedDateSelected = new Array(); // 建立初始陣列, 存放選取後的完成日期
+		
+		var jsonArray = new Array(); // 建立初始陣列, 存放待轉成 json 格式的Array
+		
+		// ========== 從ProductType的檢核方塊取得元素, 如有前端有被checked, 則會將內容存到陣列裡 ==========
+		var productDiv = document.getElementById("productDiv");
+		var productChecks = productDiv.querySelectorAll("input[type='checkbox']");
+
+        for (var i = 0; i < productChecks.length; i++){
+        	if (productChecks[i].checked == true){
+        		productSelected.push(productChecks[i].value);
+        		//console.log(productChecks[i].value);
+        	}
+        }
+		console.log("選取的產品: " + productSelected);
+		
+		// ========== 從ammeter的檢核方塊取得元素, 如有前端有被checked, 則會將內容存到陣列裡 ==========
+		var ammeterDiv = document.getElementById("ammeterDiv");
+		var ammeterChecks = ammeterDiv.querySelectorAll("input[type='checkbox']");
+		
+        for (var i = 0; i < ammeterChecks.length; i++){
+        	if (ammeterChecks[i].checked == true){
+        		ammeterSelected.push(ammeterChecks[i].value);
+        		
+        	}
+        }
+		console.log("選取的安培數: " + ammeterSelected);
+		
+		
+		// ========== 從testPerson的檢核方塊取得元素, 如有前端有被checked, 則會將內容存到陣列裡 ==========
+		var testPersonDiv = document.getElementById("testPersonDiv");
+		var testPersonChecks = testPersonDiv.querySelectorAll("input[type='checkbox']");
+
+        for (var i = 0; i < testPersonChecks.length; i++){
+        	if (testPersonChecks[i].checked == true){
+        		testPersonSelected.push(testPersonChecks[i].value);
+
+        	}
+        }
+		console.log("選取的試驗人員: " + testPersonSelected);
+		
+		
+		var poleNumDiv = document.getElementById("poleNumDiv");
+		var poleNumChecks = poleNumDiv.querySelectorAll("input[type='checkbox']");
+		
+		for (var i = 0; i < poleNumChecks.length; i++){
+        	if (poleNumChecks[i].checked == true){
+        		poleNumSelected.push(poleNumChecks[i].value);
+
+        	}
+        }
+		console.log("選取的級數: " + poleNumSelected);
+		
+		
+		var resultDiv = document.getElementById("resultDiv");
+		var resultChecks = resultDiv.querySelectorAll("input[type='checkbox']");
+		
+		for (var i = 0; i < resultChecks.length; i++){
+        	if (resultChecks[i].checked == true){
+        		resultSelected.push(resultChecks[i].value);
+
+        	}
+        }
+		console.log("選取的結果: " + resultSelected);
+		
+		var startDateSelected = document.getElementById("startDateSelected").value;
+		console.log("start date: " + startDateSelected);
+		
+	  	var rowData = { // key開頭不能為大寫, 否則後端接收會為null
+			'productType': productSelected,
+			'poleNum': poleNumSelected,
+		    'ammeter': ammeterSelected,
+		    'testPerson': testPersonSelected,
+		    'result': resultSelected, 
+		};
+		jsonArray.push(rowData);
+		
+		var jsonString = JSON.stringify(jsonArray); // 轉成 json 格式
+		
+		
 		var formData = $("#myForm").serialize(); // $("#myForm") ->取得表單元素id的值, serialize() ->並將其序列化轉為字串
-		console.log(formData);
+		//console.log(formData);
 		$.ajax({
 			url: "./viewjsonTestResult",
 		  	type: 'POST',
@@ -116,7 +203,7 @@
 		  	dataType:"json", // 接收資料格式 (後端需有標註@ResponseBody的方法)
 		  	data: formData,
 		  	success: function(data) {
-		  		console.log(data);
+		  		//console.log(data);
 		  		updateData(data);
 		  		
 		  	},
@@ -137,11 +224,11 @@
 	    	productTypeList = result.productType;
 	    	ammeterList = result.ammeter;
 	    	testPersonList = result.testPerson;	
-	    	testDate = result.testDate;
+	    	finishedTestDate = result.finishedTestDate;
 	    	console.log("productTypeList: " + productTypeList);
 	    	console.log("ammeterList: " + ammeterList);
 	    	console.log("testPersonList: " + testPersonList);
-	    	console.log("testDate: " + testDate);
+	    	console.log("finishedTestDate: " + finishedTestDate);
 
 	    },
 	    error :function(errorMsg) {
@@ -175,8 +262,7 @@
     	innerTable += "</tr>";
     	innerTable += "</tbody>";
     	innerTable += "</table>";
-    	document.getElementById("tableDiv").innerHTML = innerTable;
-    	
+    	document.getElementById("tableDiv").innerHTML = innerTable;	
     }
 	
 	
@@ -187,62 +273,44 @@
 	//<input type="checkbox" name="productType" id=productSelected onchange="submitForm();">
 	// ===== 啟動伺服器時會自動更新機種下拉式選單 =====
 	function innerProduct(){
-		var inner = ""; // 建立空變數, 存放機種下拉選單的值>
+		var inner = ""; // 建立空變數, 存放所選取的值>
 		var selectStr = "";
 		for(var i=0; i<productTypeList.length; i++){
-			/*if (productTypeList[i] == selectList[0]){
-				selectStr = "selected"; // 機種list內元素逐一篩選，如果有符合後端送來的值就給它'selected'
-			}
-			else{
-				selectStr = "";
-			}
-			inner = inner + "<option value=" + "'" + productTypeList[i] + "'" + selectStr + ">" + productTypeList[i] + "</option>";*/
-			inner = inner + "<label><input type='checkbox' name='productType' onchange='submitForm();'>" +  productTypeList[i] + "</label><br>";
+			inner = inner + "<label><input type='checkbox' name='productType' value='" + productTypeList[i] + "' onchange='submitForm();'>"
+						  +  productTypeList[i] + "</label><br>";
 		}
-		var productSelect = document.getElementById("productSelected"); //取得機種下拉選單的元件名稱
+		var productSelect = document.getElementById("productDiv"); //取得機種下拉選單的元件名稱
 		productSelect.innerHTML = inner; //傳進 HTML 裡進行渲染
 	}
 	
 	function innerAnneter(){
-		var inner = ""; // 建立空變數, 存放機種下拉選單的值>
+		var inner = ""; // 建立空變數, 存放所選取的值>
 		var selectStr = "";
 		for(var i=0; i<ammeterList.length; i++){
-			/*if (productTypeList[i] == selectList[0]){
-				selectStr = "selected"; // 機種list內元素逐一篩選，如果有符合後端送來的值就給它'selected'
-			}
-			else{
-				selectStr = "";
-			}
-			inner = inner + "<option value=" + "'" + productTypeList[i] + "'" + selectStr + ">" + productTypeList[i] + "</option>";*/
 			//inner = inner + "<option value=" + "'" + ammeterList[i] + "'"  + ">" + ammeterList[i] + "</option>";
-			inner = inner + "<label><input type='checkbox' name='ammeter' onchange='submitForm();'>" + ammeterList[i] + "</label><br>";
+			inner = inner + "<label><input type='checkbox' name='ammeter' value='" + ammeterList[i] + "' onchange='submitForm();'>"
+						  + ammeterList[i] + "</label><br>";
 		}
-		var ammeterSelect = document.getElementById("ammeterSelected"); //取得機種下拉選單的元件名稱
+		var ammeterSelect = document.getElementById("ammeterDiv"); //取得機種下拉選單的元件名稱
 		ammeterSelect.innerHTML = inner; //傳進 HTML 裡進行渲染
 	}
 	
 	function innerTestPerson(){
-		var inner = ""; // 建立空變數, 存放機種下拉選單的值>
+		var inner = ""; // 建立空變數, 存放所選取的值>
 		var selectStr = "";
 		for(var i=0; i<testPersonList.length; i++){
-			/*if (productTypeList[i] == selectList[0]){
-				selectStr = "selected"; // 機種list內元素逐一篩選，如果有符合後端送來的值就給它'selected'
-			}
-			else{
-				selectStr = "";
-			}
-			inner = inner + "<option value=" + "'" + productTypeList[i] + "'" + selectStr + ">" + productTypeList[i] + "</option>";*/
 			//inner = inner + "<option value=" + "'" + testPersonList[i] + "'"  + ">" + testPersonList[i] + "</option>";
-			inner = inner + "<label><input type='checkbox' name='testPerson' onchange='submitForm();'>" + testPersonList[i] + "</label><br>";
+			inner = inner + "<label><input type='checkbox' name='testPerson' value='" + testPersonList[i] + "' onchange='submitForm();'>"
+						  + testPersonList[i] + "</label><br>";
 		}
-		var testPersonSelect = document.getElementById("testPersonSelected"); //取得機種下拉選單的元件名稱
+		var testPersonSelect = document.getElementById("testPersonDiv"); //取得機種下拉選單的元件名稱
 		testPersonSelect.innerHTML = inner; //傳進 HTML 裡進行渲染
 	}
 	
 	var startDateSelect = document.getElementById("startDateSelected"); //取得機種下拉選單的元件名稱
-	startDateSelect.value = "2023-09-09"; //傳進 HTML 裡進行渲染
+	startDateSelect.value = finishedTestDate[0]; //傳進 HTML 裡進行渲染
 	var endDateSelect = document.getElementById("endDateSelected"); //取得機種下拉選單的元件名稱
-	endDateSelect.value = "2023-09-09"; //傳進 HTML 裡進行渲染
+	endDateSelect.value = finishedTestDate[1]; //傳進 HTML 裡進行渲染
 	
 	
 	// ========== 時間格式轉換 ==========

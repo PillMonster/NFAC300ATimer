@@ -34,8 +34,11 @@ public class TestResultController {
 	List<String> productTypeList = new ArrayList<>();
 	List<String> ammeterList = new ArrayList<>();
 	List<String> testPersonList = new ArrayList<>();
+	List<String> finishedTestDateList = new ArrayList<>();  // 宣告List<泛型>集合
+	
 	List<TestResult> testResultList = new ArrayList<>();  // 宣告List<泛型>集合
 	Map<String, Object> selectListMap = new HashMap<>(); // 宣告Map集合
+	
 	
 	ObjectMapper objectMapper = new ObjectMapper(); // 宣告物件, 使用ObjectMapper將字串轉換為JSON格式
 	String jsonString; // 宣告變數
@@ -47,12 +50,12 @@ public class TestResultController {
 		List<String> productTypeList = testResultService.findProduct();
 		List<String> ammeterList = testResultService.findAmmeter();
 		List<String> testPersonList = testResultService.findTestPerson();
-		String testDate = testResultService.findTestDate();
+		List<String> finishedTestDateList = testResultService.findTestDate();
 		
 		selectListMap.put("productType", productTypeList);
 		selectListMap.put("ammeter", ammeterList);
 		selectListMap.put("testPerson", testPersonList);
-		selectListMap.put("testDate", testDate);
+		selectListMap.put("finishedTestDate", finishedTestDateList);
 		
 		new JSONObject(selectListMap);
 		

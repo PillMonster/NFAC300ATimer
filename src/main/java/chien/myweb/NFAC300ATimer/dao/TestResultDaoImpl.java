@@ -1,7 +1,11 @@
 package chien.myweb.NFAC300ATimer.dao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,11 +58,36 @@ public class TestResultDaoImpl implements TestResultDao{
 		return resultList;
 	}*/
 	@Override
-	public String findTestDate() {
+	public List<String> findTestDate() {
+		
+		String minFinishedTestDate = "";
+		String todayFinishedTestDate = "";
+		
+		List<String> fidishedTestDateList = new ArrayList<>();
+		Date currentDate = new Date();
+		//System.out.println(currentDate);
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd"); // 創建一個一个 SimpleDateFormat 類別來定義日期的格式
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
 		String sql = "SELECT MIN(finishedTestTime) FROM testResult";
-		String startTestDate = jdbcTemplate.queryForObject(sql, String.class);
+		minFinishedTestDate = jdbcTemplate.queryForObject(sql, String.class);
 
-		return startTestDate;
+		// 解析日期字串為 Date 類別
+        try {
+			Date date = inputFormat.parse(minFinishedTestDate);
+
+			minFinishedTestDate = outputFormat.format(date); // 格式化日期
+			todayFinishedTestDate = outputFormat.format(currentDate);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        fidishedTestDateList.add(minFinishedTestDate);
+        fidishedTestDateList.add(todayFinishedTestDate);
+        //System.out.println(todayFinishedTestDate);
+		return fidishedTestDateList;
 	}
 	
 	@Override
