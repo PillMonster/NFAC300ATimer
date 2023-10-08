@@ -1,13 +1,9 @@
 package chien.myweb.NFAC300ATimer.controller;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import chien.myweb.NFAC300ATimer.entity.RequestChecked;
 import chien.myweb.NFAC300ATimer.entity.TestResult;
 import chien.myweb.NFAC300ATimer.service.TestResultService;
 
@@ -31,17 +25,14 @@ public class TestResultController {
 	@Autowired
 	TestResultService testResultService;
 	
-	List<String> productTypeList = new ArrayList<>();
+	/*List<String> productTypeList = new ArrayList<>();
 	List<String> ammeterList = new ArrayList<>();
 	List<String> testPersonList = new ArrayList<>();
-	List<String> finishedTestDateList = new ArrayList<>();  // 宣告List<泛型>集合
+	List<String> finishedTestDateList = new ArrayList<>();  // 宣告List<泛型>集合*/
 	
 	List<TestResult> testResultList = new ArrayList<>();  // 宣告List<泛型>集合
 	Map<String, Object> selectListMap = new HashMap<>(); // 宣告Map集合
-	
-	
-	ObjectMapper objectMapper = new ObjectMapper(); // 宣告物件, 使用ObjectMapper將字串轉換為JSON格式
-	String jsonString; // 宣告變數
+
 	
 	@GetMapping("/viewjsonSelectList")
 	@ResponseBody
@@ -61,68 +52,54 @@ public class TestResultController {
 		
 		return selectListMap;
 	} 
-	
-	
-	/*@GetMapping("/viewjsonAmmeter")
-	@ResponseBody
-	public List<String> jsonAmmeter(){
-		List<String> ammeterList = testResultService.findAmmeter();
-		new JSONObject(ammeterList);
-		return ammeterList;
-	}
-	
-	@GetMapping("/viewjsonTestPerson")
-	@ResponseBody
-	public List<String> jsonTestPerson(){
-		List<String> testPersonList = testResultService.findTestPerson();
-		new JSONObject(testPersonList);
-		return testPersonList;
-	}
-	
-	@GetMapping("/viewjsoTestDate")
-	@ResponseBody
-	public String jsonTestDate(){
-		String TestDate = testResultService.findTestDate();
-		// 創建一個JSON對象，將字串包裝在其中
-		try {
-			jsonString = objectMapper.writeValueAsString(TestDate);
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return jsonString;
-	}*/
-	
+
 	@PostMapping(value = "/viewjsonTestResult")
 	@ResponseBody
-	public List<TestResult> jsonTestResult(HttpServletRequest request){
+	//public List<TestResult> jsonTestResult(HttpServletRequest request){
+	public List<TestResult> jsonTestResult(@RequestBody List<RequestChecked> requestChecked){
+		
+		List<String> productTypeList = new ArrayList<>();
+        List<String> poleNumList = new ArrayList<>();
+        List<String> ammeterList = new ArrayList<>();
+        List<String> testPersonList = new ArrayList<>();
+        List<String> resultList = new ArrayList<>();
+        List<String> finishedTestDateList = new ArrayList<>();
+		
+		for (RequestChecked jsonData : requestChecked) {
+            productTypeList = jsonData.getProductType();
+            poleNumList = jsonData.getPoleNum();
+            ammeterList = jsonData.getAmmeter();
+            testPersonList = jsonData.getTestPerson();
+            resultList = jsonData.getResult();
+            finishedTestDateList = jsonData.getFinishedTestDate();
+            
+            System.out.println("====== From 前端 ======");
+			System.out.println("ProductType from 前端: " + productTypeList);
+	    	System.out.println("PoleNum from 前端: " + poleNumList);
+	    	System.out.println("Ammeter from 前端: " +  ammeterList);
+	    	System.out.println("TestPerson from 前端: " + testPersonList);
+	    	System.out.println("Result from 前端: " + resultList);
+	    	System.out.println("FinishedTestTime from 前端: " + finishedTestDateList);
+	    	System.out.println("-----------------------");
+        }
+		
+		
+		List<TestResult> testResultList = testResultService.findTestResult(productTypeList, poleNumList, ammeterList, 
+																			testPersonList, resultList, 
+																			finishedTestDateList.get(0), finishedTestDateList.get(1));
 
-		String productType = request.getParameter("productType");
-		String poleNum = request.getParameter("poleNum");
-		String ammeter = request.getParameter("ammeter");
-		String testPerson = request.getParameter("testPerson");
-		String result = request.getParameter("result");
-		String startDateTime = request.getParameter("start-date");
-		String endDateTime = request.getParameter("end-date");
-		
-		System.out.println("productType: " + productType);
-		System.out.println("poleNum: " + poleNum);
-		System.out.println("ammeter: " + ammeter);
-		System.out.println("testPerson: " + testPerson);
-		System.out.println("result: " + result);
-		System.out.println("startDateTime: " + startDateTime);
-		System.out.println("endDateTime: " + endDateTime);
-	
-		List<TestResult> testResultList = testResultService.findTestResult(productType, poleNum, ammeter, testPerson, result, startDateTime, endDateTime);
-		
 		/*testResultList.forEach(p ->{
-			System.out.println("ProductType: " +p.getProductType());
-	    	System.out.println("PoleNum: " + p.getPoleNum());
-	    	System.out.println("------------");
+			System.out.println("====== From DB ======");
+			System.out.println("ProductType from DB: " +p.getProductType());
+	    	System.out.println("PoleNum from DB: " + p.getPoleNum());
+	    	System.out.println("Ammeter from DB: " + p.getAmmeter());
+	    	System.out.println("TestPerson from DB: " + p.getTestPerson());
+	    	System.out.println("Result from DB: " + p.getResult());
+	    	System.out.println("FinishedTestTime from DB: " + p.getFinishedTestTime());
+	    	System.out.println("-----------------------");
 		});*/
 			
 		new JSONObject(testResultList);
-			
 		return testResultList;
 	}
 	

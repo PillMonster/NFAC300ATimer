@@ -21,7 +21,6 @@ public class TestResultDaoImpl implements TestResultDao{
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
-	
 	@Override
 	public List<String> findProduct() {
 		String sql = "select distinct productType from testResult;";
@@ -36,6 +35,7 @@ public class TestResultDaoImpl implements TestResultDao{
 		Collections.sort(PoleNumList);
 		return PoleNumList;
 	}*/
+	
 	@Override
 	public List<String> findAmmeter() {
 		String sql = "select distinct ammeter from testResult;";
@@ -43,6 +43,7 @@ public class TestResultDaoImpl implements TestResultDao{
 		Collections.sort(ammeterList, new CustomComparator());
 		return ammeterList;
 	}
+	
 	@Override
 	public List<String> findTestPerson() {
 		String sql = "select distinct testPerson from testResult;";
@@ -57,59 +58,45 @@ public class TestResultDaoImpl implements TestResultDao{
 		Collections.sort(resultList);
 		return resultList;
 	}*/
+	
 	@Override
-	public List<String> findTestDate() {
-		
-		String minFinishedTestDate = "";
-		String todayFinishedTestDate = "";
-		
-		List<String> fidishedTestDateList = new ArrayList<>();
-		Date currentDate = new Date();
-		//System.out.println(currentDate);
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd"); // 創建一個一个 SimpleDateFormat 類別來定義日期的格式
-        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-        
+	public String findTestDate() {   
 		String sql = "SELECT MIN(finishedTestTime) FROM testResult";
-		minFinishedTestDate = jdbcTemplate.queryForObject(sql, String.class);
-
-		// 解析日期字串為 Date 類別
-        try {
-			Date date = inputFormat.parse(minFinishedTestDate);
-
-			minFinishedTestDate = outputFormat.format(date); // 格式化日期
-			todayFinishedTestDate = outputFormat.format(currentDate);
-			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        fidishedTestDateList.add(minFinishedTestDate);
-        fidishedTestDateList.add(todayFinishedTestDate);
-        //System.out.println(todayFinishedTestDate);
-		return fidishedTestDateList;
+		String minFinishedTestDate = jdbcTemplate.queryForObject(sql, String.class);
+		return minFinishedTestDate;
 	}
 	
 	@Override
-	public List<TestResult> findByMultiple(String productType, String poleNum, String ammeter, String testPerson, String result, String startDateTime, String endDateTime) {
-
-		String sql = "select * from testResult where productType IN (?) and poleNum IN (?) and ammeter IN (?) and testPerson IN (?) and result IN (?)"
-				+ " and finishedTestTime >=? and finishedTestTime <=?";
+	public List<TestResult> findByMultiple(String productTypeSerial, String poleNumSerial, String ammeterSerial,
+											String testPersonSerial, String resultSerial, String startDateTime, String endDateTime) {
 		
-		return jdbcTemplate.query(
-				sql,
-				new Object[]{productType, poleNum, ammeter, testPerson, result, startDateTime +" 00:00:00", endDateTime +" 23:59:59"},
-				(rs, rowNum) -> new TestResult(  // 使用lambda方法
-						rs.getInt("id"),
-						rs.getString("productType"),
-						rs.getString("poleNum"),
-						rs.getString("ammeter"),
-						rs.getString("testPerson"),
-						rs.getString("trip105"),
-						rs.getString("trip130"),
-						rs.getString("result"),
-						rs.getTimestamp("finishedTestTime"),
-						rs.getString("testMessage"))
+		/*System.out.println(productTypeSerial);
+		System.out.println(poleNumSerial);
+		System.out.println(ammeterSerial);
+		System.out.println(testPersonSerial);
+		System.out.println(resultSerial);
+		System.out.println(startDateTime);
+		System.out.println(endDateTime);*/
+
+        String sql = "SELECT * FROM testResult WHERE productType IN (" + productTypeSerial + ") " +
+                "AND poleNum IN (" + poleNumSerial + ") " +
+                "AND ammeter IN (" + ammeterSerial + ") " +
+                "AND testPerson IN (" + testPersonSerial + ") " +
+                "AND result IN (" + resultSerial + ") " +
+                "AND finishedTestTime >= '" + startDateTime + " 00:00:00' " +
+                "AND finishedTestTime <= '" + endDateTime + " 23:59:59'";
+		
+		return jdbcTemplate.query(sql, (rs, rowNum) -> new TestResult(  // 使用lambda方法
+				rs.getInt("id"),
+				rs.getString("productType"),
+				rs.getString("poleNum"),
+				rs.getString("ammeter"),
+				rs.getString("testPerson"),
+				rs.getString("trip105"),
+				rs.getString("trip130"),
+				rs.getString("result"),
+				rs.getTimestamp("finishedTestTime"),
+				rs.getString("testMessage"))
 		);
 	}
 	

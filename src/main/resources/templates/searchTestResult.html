@@ -30,9 +30,10 @@
 			<tr>
 				<td >
 					<div class="select" id="poleNumDiv">
-						<label><input type="checkbox" name="poleNum" id=poleNumSelected value="2P" onchange="submitForm();">2P</label><br>
-						<label><input type="checkbox" name="poleNum" id=poleNumSelected value="3P" onchange="submitForm();">3P</label><br>
-						<label><input type="checkbox" name="poleNum" id=poleNumSelected value="4P" onchange="submitForm();">4P</label><br>
+						<label><input type="checkbox" id="poleNumSelectAll" value="全選" onchange="toggleCheckboxes('poleNum', 'poleNumSelectAll'); submitForm();">全選</label><br>
+						<label><input type="checkbox" name="poleNum" value="2P" onchange="checkSelectAll('poleNum', 'poleNumSelectAll'); submitForm();" checked>2P</label><br>
+						<label><input type="checkbox" name="poleNum" value="3P" onchange="checkSelectAll('poleNum', 'poleNumSelectAll'); submitForm();">3P</label><br>
+						<label><input type="checkbox" name="poleNum" value="4P" onchange="checkSelectAll('poleNum', 'poleNumSelectAll'); submitForm();">4P</label><br>
 					</div>
 				</td>
 
@@ -65,8 +66,9 @@
 			<tr>
 				<td>
 					<div class="select" id="resultDiv">
-						<label><input type="checkbox"  name="result" id="resultPass" value="合格" onchange="submitForm()" checked/>合格</label><br>
-						<label><input type="checkbox" name="result" id="resultFail" value="不合格" onchange="submitForm()"/>不合格</label><br>
+						<label><input type="checkbox" id="resultSelectAll" value="全選" onchange="toggleCheckboxes('result', 'resultSelectAll'); submitForm();">全選</label><br>
+						<label><input type="checkbox"  name="result" id="resultPass" value="合格" onchange="checkSelectAll('result', 'resultSelectAll'); submitForm()" checked/>合格</label><br>
+						<label><input type="checkbox" name="result" id="resultFail" value="不合格" onchange="checkSelectAll('result', 'resultSelectAll'); submitForm()"/>不合格</label><br>
 					</div>
 				</td>
 			</tr>
@@ -100,21 +102,73 @@
 	var productTypeList = new Array(); // 建立初始陣列, 存放每一個產品
 	var ammeterList = new Array(); // 建立初始陣列, 存放每一個安培數
 	var testPersonList = new Array(); // 建立初始陣列, 存放每一個試驗人員
+	var finishedTestDateList = new Array();; // 建立初始變數, 存放試驗日期
 	
 	
-	var finishedTestDate = new Array();; // 建立初始變數, 存放試驗日期
+	//AJAX向後端發送請求及接收重後端來的資料(此ajax方法為取得機種、安培數、試驗人員、完成日期的陣列)
+	$.ajax({
+	    type:"GET",//請求方式
+	    url:"./viewjsonSelectList",//url代表向後端發送請求 (後端需有標註@GetMapping("/viewjsonSelectList")的方法)
+	    dataType:"json",//接收資料格式 (後端需有標註@ResponseBody的方法)
+	    async:false,//false為非同步
+	    success:function (result) {//接收後端來的資料
+	    	productTypeList = result.productType;
+	    	ammeterList = result.ammeter;
+	    	testPersonList = result.testPerson;	
+	    	finishedTestDateList = result.finishedTestDate;
+	    	
+	    	console.log("productTypeList: " + productTypeList);
+	    	console.log("ammeterList: " + ammeterList);
+	    	console.log("testPersonList: " + testPersonList);
+	    	console.log("finishedTestDateList: " + finishedTestDateList);
+	    },
+	    error :function(errorMsg) {
+	        alert("請求後端資料失敗！(viewjsonSelectList)");
+	    }
+	});
 	
-	
+	innerProduct(); // 產生產品的checkbox
+	innerAnneter(); // 產生安培數的checkbox
+	innerTestPerson(); // 產生試驗人員的checkbox
+	var startDateSelect = document.getElementById("startDateSelected"); //取得機種下拉選單的元件名稱
+	startDateSelect.value = finishedTestDateList[0]; //傳進 HTML 裡進行渲染
+	var endDateSelect = document.getElementById("endDateSelected"); //取得機種下拉選單的元件名稱
+	endDateSelect.value = finishedTestDateList[1]; //傳進 HTML 裡進行渲染
 	
 	//自訂submitForm()方法, 利用ajax的serialize()方法, 可將表單內容送到後端
 	function submitForm() {
+		//var formData = $("#myForm").serialize(); // $("#myForm") ->取得表單元素id的值, serialize() ->並將其序列化轉為字串
+		//console.log(formData);
+		var jsonString = getChecked(); // 取得選取後的json資料
+		console.log(jsonString);
+
+		$.ajax({
+			url: "./viewjsonTestResult",
+		  	type: 'POST',
+		  	contentType: "application/json;charset=UTF-8", // 後端如果要以List接收, 這行必須要開
+		  	dataType:"json", // 接收資料格式 (後端需有標註@ResponseBody的方法)
+		  	//data: formData, // 指定資料傳到後端
+		  	data:  jsonString, // 指定資料傳到後端
+		  	success: function(data) {
+		  		//console.log(data);
+		  		updateData(data);
+		  		
+		  	},
+		  	error: function(xhr, status, error) {
+			}
+		});	
+	}
+	
+	
+	// 取得檢核方塊內所選取的值, 再存入Array, 並轉成json格式
+	function getChecked(){
 		
 		var productSelected = new Array(); // 建立初始陣列, 存放選取後的產品
 		var ammeterSelected = new Array(); // 建立初始陣列, 存放選取後的安培數
 		var testPersonSelected = new Array(); // 建立初始陣列, 存放選取後的測試人員
 		var poleNumSelected = new Array(); // 建立初始陣列, 存放選取後的極數
 		var resultSelected = new Array(); // 建立初始陣列, 存放選取後的結果
-		var finishedDateSelected = new Array(); // 建立初始陣列, 存放選取後的完成日期
+		var finishedTestDateSelected = new Array(); // 建立初始陣列, 存放選取後的完成日期
 		
 		var jsonArray = new Array(); // 建立初始陣列, 存放待轉成 json 格式的Array
 		
@@ -122,7 +176,7 @@
 		var productDiv = document.getElementById("productDiv");
 		var productChecks = productDiv.querySelectorAll("input[type='checkbox']");
 
-        for (var i = 0; i < productChecks.length; i++){
+        for (var i = 1; i < productChecks.length; i++){ // 0為全選, 故重1開始
         	if (productChecks[i].checked == true){
         		productSelected.push(productChecks[i].value);
         		//console.log(productChecks[i].value);
@@ -134,20 +188,19 @@
 		var ammeterDiv = document.getElementById("ammeterDiv");
 		var ammeterChecks = ammeterDiv.querySelectorAll("input[type='checkbox']");
 		
-        for (var i = 0; i < ammeterChecks.length; i++){
+        for (var i = 1; i < ammeterChecks.length; i++){ // 0為全選, 故重1開始
         	if (ammeterChecks[i].checked == true){
         		ammeterSelected.push(ammeterChecks[i].value);
         		
         	}
         }
-		console.log("選取的安培數: " + ammeterSelected);
-		
+		console.log("選取的安培數: " + ammeterSelected);	
 		
 		// ========== 從testPerson的檢核方塊取得元素, 如有前端有被checked, 則會將內容存到陣列裡 ==========
 		var testPersonDiv = document.getElementById("testPersonDiv");
 		var testPersonChecks = testPersonDiv.querySelectorAll("input[type='checkbox']");
 
-        for (var i = 0; i < testPersonChecks.length; i++){
+        for (var i = 1; i < testPersonChecks.length; i++){ // 0為全選, 故重1開始
         	if (testPersonChecks[i].checked == true){
         		testPersonSelected.push(testPersonChecks[i].value);
 
@@ -155,11 +208,11 @@
         }
 		console.log("選取的試驗人員: " + testPersonSelected);
 		
-		
+		// ========== 從poleNum的檢核方塊取得元素, 如有前端有被checked, 則會將內容存到陣列裡 ==========
 		var poleNumDiv = document.getElementById("poleNumDiv");
 		var poleNumChecks = poleNumDiv.querySelectorAll("input[type='checkbox']");
 		
-		for (var i = 0; i < poleNumChecks.length; i++){
+		for (var i = 1; i < poleNumChecks.length; i++){ // 0為全選, 故重1開始
         	if (poleNumChecks[i].checked == true){
         		poleNumSelected.push(poleNumChecks[i].value);
 
@@ -167,11 +220,11 @@
         }
 		console.log("選取的級數: " + poleNumSelected);
 		
-		
+		// ========== 從result的檢核方塊取得元素, 如有前端有被checked, 則會將內容存到陣列裡 ==========
 		var resultDiv = document.getElementById("resultDiv");
 		var resultChecks = resultDiv.querySelectorAll("input[type='checkbox']");
 		
-		for (var i = 0; i < resultChecks.length; i++){
+		for (var i = 1; i < resultChecks.length; i++){ // 0為全選, 故重1開始
         	if (resultChecks[i].checked == true){
         		resultSelected.push(resultChecks[i].value);
 
@@ -179,62 +232,30 @@
         }
 		console.log("選取的結果: " + resultSelected);
 		
+		// ========== 從startDate和endDate的檢核方塊取得元素, 如有前端有被checked, 則會將內容存到陣列裡 ==========
 		var startDateSelected = document.getElementById("startDateSelected").value;
-		console.log("start date: " + startDateSelected);
+		var endDateSelected = document.getElementById("endDateSelected").value;
+		finishedTestDateSelected.push(startDateSelected);
+		finishedTestDateSelected.push(endDateSelected);
+		console.log("選取開始的日期: " + startDateSelected);
+		console.log("選取結束的日期: " + endDateSelected);
 		
+		// ========== 從將陣列資料,以key-value方式放入rowData ==========
 	  	var rowData = { // key開頭不能為大寫, 否則後端接收會為null
 			'productType': productSelected,
 			'poleNum': poleNumSelected,
 		    'ammeter': ammeterSelected,
 		    'testPerson': testPersonSelected,
 		    'result': resultSelected, 
+		    'finishedTestDate': finishedTestDateSelected
 		};
-		jsonArray.push(rowData);
+		jsonArray.push(rowData); // 將整理好的資料放入jsonArray
 		
 		var jsonString = JSON.stringify(jsonArray); // 轉成 json 格式
-		
-		
-		var formData = $("#myForm").serialize(); // $("#myForm") ->取得表單元素id的值, serialize() ->並將其序列化轉為字串
-		//console.log(formData);
-		$.ajax({
-			url: "./viewjsonTestResult",
-		  	type: 'POST',
-		  	//contentType: "application/json", // 後端如果要以List接收, 這行必須要開
-		  	dataType:"json", // 接收資料格式 (後端需有標註@ResponseBody的方法)
-		  	data: formData,
-		  	success: function(data) {
-		  		//console.log(data);
-		  		updateData(data);
-		  		
-		  	},
-		  	error: function(xhr, status, error) {
-			}
-		});	
+		//console.log(jsonString);
+		return jsonString;
 	}
 	
-	//AJAX向後端發送請求及接收重後端來的資料(此ajax方法為取得機種、日期、電流的陣列)
-	$.ajax({
-	    type:"GET",//請求方式
-	    url:"./viewjsonSelectList",//url代表向後端發送請求 (後端需有標註@GetMapping("/viewjsonSelectList")的方法)
-	    dataType:"json",//接收資料格式 (後端需有標註@ResponseBody的方法)
-	    async:false,//false為非同步
-	    success:function (result) {//接收後端來的資料
-	    	//productTypeList = result["productType"];
-	    	
-	    	productTypeList = result.productType;
-	    	ammeterList = result.ammeter;
-	    	testPersonList = result.testPerson;	
-	    	finishedTestDate = result.finishedTestDate;
-	    	console.log("productTypeList: " + productTypeList);
-	    	console.log("ammeterList: " + ammeterList);
-	    	console.log("testPersonList: " + testPersonList);
-	    	console.log("finishedTestDate: " + finishedTestDate);
-
-	    },
-	    error :function(errorMsg) {
-	        alert("請求後端資料失敗！(viewjsonSelectList)");
-	    }
-	});
 	
 	// 自訂更新資料的函式, 可從後端接收來的數據, 渲染到html讀table上
     function updateData(data){
@@ -265,53 +286,77 @@
     	document.getElementById("tableDiv").innerHTML = innerTable;	
     }
 	
-	
-	innerProduct();
-	innerAnneter();
-	innerTestPerson();
-	
-	//<input type="checkbox" name="productType" id=productSelected onchange="submitForm();">
-	// ===== 啟動伺服器時會自動更新機種下拉式選單 =====
+	// ========== 產生checkbox的內容 ==========
 	function innerProduct(){
 		var inner = ""; // 建立空變數, 存放所選取的值>
-		var selectStr = "";
+		inner = "<label><input type='checkbox' id='productSelectAll' value='全選' onchange='toggleCheckboxes(\"productType\", \"productSelectAll\"); submitForm();'>全選</label><br>";
+		
 		for(var i=0; i<productTypeList.length; i++){
-			inner = inner + "<label><input type='checkbox' name='productType' value='" + productTypeList[i] + "' onchange='submitForm();'>"
+			inner = inner + "<label><input type='checkbox' name='productType' value='" + productTypeList[i] + "' onchange='checkSelectAll(\"productType\", \"productSelectAll\"); submitForm();'>"
 						  +  productTypeList[i] + "</label><br>";
 		}
-		var productSelect = document.getElementById("productDiv"); //取得機種下拉選單的元件名稱
-		productSelect.innerHTML = inner; //傳進 HTML 裡進行渲染
+		var productDiv = document.getElementById("productDiv"); // 取得機種div元素
+		productDiv.innerHTML = inner; // 傳進 HTML 裡進行渲染
+		var productChecks = productDiv.querySelectorAll("input[type='checkbox']"); // 取得所有機種checkbox的元素
+		productChecks[1].checked = true; // 設定第一個機種預設選取
 	}
+
 	
 	function innerAnneter(){
 		var inner = ""; // 建立空變數, 存放所選取的值>
-		var selectStr = "";
+		inner = "<label><input type='checkbox' id='ammeterSelectAll' value='全選' onchange='toggleCheckboxes(\"ammeter\", \"ammeterSelectAll\"); submitForm();'>全選</label><br>";
+		
 		for(var i=0; i<ammeterList.length; i++){
 			//inner = inner + "<option value=" + "'" + ammeterList[i] + "'"  + ">" + ammeterList[i] + "</option>";
-			inner = inner + "<label><input type='checkbox' name='ammeter' value='" + ammeterList[i] + "' onchange='submitForm();'>"
+			inner = inner + "<label><input type='checkbox' name='ammeter' value='" + ammeterList[i] + "' onchange='checkSelectAll(\"ammeter\", \"ammeterSelectAll\"); submitForm();'>"
 						  + ammeterList[i] + "</label><br>";
 		}
-		var ammeterSelect = document.getElementById("ammeterDiv"); //取得機種下拉選單的元件名稱
-		ammeterSelect.innerHTML = inner; //傳進 HTML 裡進行渲染
+		
+		var ammeterDiv = document.getElementById("ammeterDiv"); // 取得安培數div元素
+		ammeterDiv.innerHTML = inner; //傳進 HTML 裡進行渲染
+		var ammeterChecks = ammeterDiv.querySelectorAll("input[type='checkbox']"); // 取得所有安培數checkbox的元素
+		ammeterChecks[1].checked = true; // 設定第一個安培數預設選取
 	}
 	
 	function innerTestPerson(){
 		var inner = ""; // 建立空變數, 存放所選取的值>
-		var selectStr = "";
+		inner = "<label><input type='checkbox' id='testPersonSelectAll' value='全選' onchange='toggleCheckboxes(\"testPerson\", \"testPersonSelectAll\");  submitForm();'>全選</label><br>";
+		
 		for(var i=0; i<testPersonList.length; i++){
 			//inner = inner + "<option value=" + "'" + testPersonList[i] + "'"  + ">" + testPersonList[i] + "</option>";
-			inner = inner + "<label><input type='checkbox' name='testPerson' value='" + testPersonList[i] + "' onchange='submitForm();'>"
+			inner = inner + "<label><input type='checkbox' name='testPerson' value='" + testPersonList[i] + "' onchange='checkSelectAll(\"testPerson\", \"testPersonSelectAll\"); submitForm();'>"
 						  + testPersonList[i] + "</label><br>";
 		}
-		var testPersonSelect = document.getElementById("testPersonDiv"); //取得機種下拉選單的元件名稱
-		testPersonSelect.innerHTML = inner; //傳進 HTML 裡進行渲染
+		var testPersonDiv = document.getElementById("testPersonDiv"); // 取得試驗人員div元素
+		testPersonDiv.innerHTML = inner; //傳進 HTML 裡進行渲染
+		var testPersonChecks = testPersonDiv.querySelectorAll("input[type='checkbox']"); // 取得所有試驗人員checkbox的元素
+		testPersonChecks[1].checked = true; // 設定第一位試驗人員預設選取
 	}
 	
-	var startDateSelect = document.getElementById("startDateSelected"); //取得機種下拉選單的元件名稱
-	startDateSelect.value = finishedTestDate[0]; //傳進 HTML 裡進行渲染
-	var endDateSelect = document.getElementById("endDateSelected"); //取得機種下拉選單的元件名稱
-	endDateSelect.value = finishedTestDate[1]; //傳進 HTML 裡進行渲染
-	
+	// ========== 點選全選時,取得所有checkbox內容值 ==========
+	function toggleCheckboxes(selectCheckName, selectCheckAll) {
+		var checkboxes = document.getElementsByName(selectCheckName);
+        var selectAllCheckbox = document.getElementById(selectCheckAll);
+         
+        for (var i = 0; i < checkboxes.length; i++) {
+        	checkboxes[i].checked = selectAllCheckbox.checked;
+        }
+    }
+	 
+	// ========== 當全選checked時, 任一取消checkbox的內容值, 則全選也會被取消 ===========
+	function checkSelectAll(selectCheckName, selectCheckAll) {
+		var checkboxes = document.getElementsByName(selectCheckName);
+		var selectAllCheckbox = document.getElementById(selectCheckAll);
+		var allChecked = true;
+
+		for (var i = 0; i < checkboxes.length; i++) {
+			if (!checkboxes[i].checked) {
+				allChecked = false;
+				break;
+			}
+		}
+		selectAllCheckbox.checked = allChecked;
+	}
 	
 	// ========== 時間格式轉換 ==========
 	function padTo2Digits(num) {

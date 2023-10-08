@@ -9,6 +9,7 @@ public interface TestResultDao {
 	List<String> findProduct();
 	List<String> findAmmeter();
 	List<String> findTestPerson();
-	List<String> findTestDate();
-	List<TestResult> findByMultiple(String productType, String poleNum, String ammeter, String testPerson, String result, String startDateTime, String endDateTime);
+	String findTestDate();
+	List<TestResult> findByMultiple(String productTypeSerial, String poleNumSerial, String ammeterSerial,
+									String testPersonSerial, String resultSerial, String startDateTime, String endDateTime);
 }
