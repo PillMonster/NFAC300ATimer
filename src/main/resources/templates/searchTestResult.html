@@ -91,7 +91,20 @@
 	</form>
 </div>
 
+
 <div id="tableDiv" class="rightDiv"></div>
+
+<div id="popup" class="modal" style="display: none;">
+	<div class="modal-content">
+        <span class="close" id="closePopup">&times;</span>
+        <h3>修改備註</h3>
+		<textarea id="remark" rows="6" cols="40" style="border:2px solid;">
+		
+		</textarea><br>
+		<button class='edit-button' id="butEdit">更新</button>
+    </div>
+
+</div>
 
 <script type="text/javascript">
 
@@ -103,6 +116,8 @@
 	var ammeterList = new Array(); // 建立初始陣列, 存放每一個安培數
 	var testPersonList = new Array(); // 建立初始陣列, 存放每一個試驗人員
 	var finishedTestDateList = new Array();; // 建立初始變數, 存放試驗日期
+	
+	
 	
 	
 	//AJAX向後端發送請求及接收重後端來的資料(此ajax方法為取得機種、安培數、試驗人員、完成日期的陣列)
@@ -150,7 +165,7 @@
 		  	//data: formData, // 指定資料傳到後端
 		  	data:  jsonString, // 指定資料傳到後端
 		  	success: function(data) {
-		  		//console.log(data);
+		  		console.log(data);
 		  		updateData(data);
 		  		
 		  	},
@@ -263,7 +278,7 @@
     	innerTable += "<table border='1' class='styled-table'>";
     	//table title
     	innerTable += "<thead>";
-    	innerTable += "<tr><td>編號</td><td>機種</td><td>極數</td><td>安培數</td><td>試驗人員</td><td>105%不跳脫</td><td>130%跳脫</td><td>結果</td><td>完成時間</td><td>備註</td>";
+    	innerTable += "<tr><td>編號</td><td>機種</td><td>極數</td><td>安培數</td><td>試驗人員</td><td>105%不跳脫</td><td>130%跳脫</td><td>結果</td><td>完成時間</td><td>備註</td><td>編輯備註</td>";
     	innerTable += "</thead>";
     	innerTable += "<tbody>";
     	for (var i = 0; i < data.length; i++) {
@@ -279,6 +294,8 @@
     		innerTable += "<td>" + data[i].result + "</td>";
     		innerTable += "<td>" + formatDate(new Date(data[i].finishedTestTime)) + "</td>";
     		innerTable += "<td>" + data[i].testMessage + "</td>";
+    		//innerTable += "<td>" + "<button class='edit-button' id='showPopup' data-id='" + data[i].id + "' data-text='" + data[i].testMessage + "' onclick='popupToEdit()'>編輯</button></td>";
+    		innerTable += "<td>" + "<button class='edit-button' id='showPopup' data-id=" + data[i].id + " data-text=" + data[i].testMessage + " onclick='popupToEdit()'>編輯</button></td>";
     	}
     	innerTable += "</tr>";
     	innerTable += "</tbody>";
@@ -358,6 +375,50 @@
 		selectAllCheckbox.checked = allChecked;
 	}
 	
+	
+	var tableDiv = document.getElementById("tableDiv");
+	
+	console.log(tableDiv);
+	
+	// 获取按钮和弹窗元素
+    var popup = document.getElementById('popup');
+	// 获取关闭按钮
+    var closePopup = document.getElementById('closePopup');
+	
+	// 当关闭按钮点击时关闭弹窗
+    closePopup.addEventListener('click', function() {
+        popup.style.display = 'none'; // 关闭弹窗
+    });
+	
+    var butEdit = document.getElementById('butEdit');
+
+    butEdit.addEventListener('click', function() {
+    	closePopup.addEventListener('click', function() {
+            popup.style.display = 'none'; // 关闭弹窗
+        });
+    	var remark = document.getElementById('remark').value;
+    	
+    	console.log(remark);
+    });
+
+	
+    function popupToEdit() {
+    	$(document).on('click', '.edit-button', function(e) {
+    		var id = $(this).data("id");
+    		console.log(id);
+    		
+    		var testMessage = $(this).data("text");
+    		console.log(testMessage);
+    		document.getElementById('remark').value = testMessage;
+    		
+    		popup.style.display = 'block'; // 显示弹窗
+    	});
+    	
+    	
+    };
+    
+    
+    
 	// ========== 時間格式轉換 ==========
 	function padTo2Digits(num) {
 		// 目標字串被填充到指定長度後，所得的新字串

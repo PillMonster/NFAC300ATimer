@@ -174,3 +174,36 @@ Chart styles
 }
 
 
+/* ==========
+样式化弹窗 
+  ==========*/
+.modal {
+	display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: white;
+	border: 1px solid #ccc;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	padding: 20px;
+	border-radius: 5px;
+}
+
+.modal-content {
+    text-align: center;
+}
+
+.close {
+	position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+	font-size: 30px; /* 放大 "X" */
+	transition: background-color 0.3s; /* 添加颜色过渡效果 */
+}
+
+.close:hover {
+    background-color: red; /* 鼠标悬停时的背景颜色 */
+	color: white; /* 文本颜色 */   
+}
