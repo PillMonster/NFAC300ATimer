@@ -101,7 +101,7 @@
 		<textarea id="remark" rows="6" cols="40" style="border:2px solid;">
 		
 		</textarea><br>
-		<button class='edit-button' id="butEdit">更新</button>
+		<button class='btnEdit' id="btnEdit">更新</button>
     </div>
 
 </div>
@@ -376,47 +376,44 @@
 	}
 	
 	
-	var tableDiv = document.getElementById("tableDiv");
+	// ========== 彈窗事件及文字訊息更新 ==========
+    var popup = document.getElementById('popup'); // 獲取彈窗元素
+    var closePopup = document.getElementById('closePopup'); // 獲取關閉按鈕元素
 	
-	console.log(tableDiv);
-	
-	// 获取按钮和弹窗元素
-    var popup = document.getElementById('popup');
-	// 获取关闭按钮
-    var closePopup = document.getElementById('closePopup');
-	
-	// 当关闭按钮点击时关闭弹窗
-    closePopup.addEventListener('click', function() {
-        popup.style.display = 'none'; // 关闭弹窗
+ 	
+    closePopup.addEventListener('click', function() { // 當按下關閉按鈕"X"時, 即關閉彈窗
+        popup.style.display = 'none'; // 關閉彈窗
     });
 	
-    var butEdit = document.getElementById('butEdit');
-
-    butEdit.addEventListener('click', function() {
-    	closePopup.addEventListener('click', function() {
-            popup.style.display = 'none'; // 关闭弹窗
-        });
-    	var remark = document.getElementById('remark').value;
-    	
-    	console.log(remark);
-    });
-
-	
-    function popupToEdit() {
-    	$(document).on('click', '.edit-button', function(e) {
-    		var id = $(this).data("id");
+	// 當使用者於表格中按下「編輯」按鈕時, 取得後端傳來的id與testMessage, 並將testMessage傳到前端
+    function popupToEdit() {	
+    	/* 
+    		$(document)為整個文檔對象, on(....)為事件綁定, click為事件類型,點擊事件時觸發事件處理程序, 
+    		.edit-button為選擇器, 當用戶點擊帶有class為.edit-button的按鈕時, 事件處理程序將被執行,
+    		function(e) { xxxx }為事件處理的具體程式碼, e為事件對象, xxxx表示要執行的程式碼
+		*/
+    	$(document).on('click', '.edit-button', function(e) { 
+    		
+    		var id = $(this).data("id"); // this當前觸發的元素, 亦即當前被點擊的按鈕, 從html元素中獲取data-id屬性的值
+    		var testMessage = $(this).data("text"); // this當前觸發的元素, 亦即當前被點擊的按鈕, 從html元素中獲取data-text屬性的值
     		console.log(id);
-    		
-    		var testMessage = $(this).data("text");
     		console.log(testMessage);
-    		document.getElementById('remark').value = testMessage;
     		
-    		popup.style.display = 'block'; // 显示弹窗
-    	});
-    	
-    	
+    		document.getElementById('remark').value = testMessage; // 將testMessage傳到textarea
+    		popup.style.display = 'block'; // 顯示彈窗
+    	});	
     };
     
+    // ========== 更新訊息 ==========
+	var btnEdit = document.getElementById('btnEdit'); // 獲取彈窗裡的更新按鈕元素
+	
+ 	// 當按下彈窗裡的更新按鈕元素, 取得使用者輸入的文字, 並透過AJAX傳到後端, 最後關閉彈窗
+    btnEdit.addEventListener('click', function() {
+    	
+    	var remark = document.getElementById('remark').value; // 獲取文字視窗(textarea)元素內的值
+    	popup.style.display = 'none'; // 關閉彈窗
+    	console.log(remark);
+    });
     
     
 	// ========== 時間格式轉換 ==========

@@ -62,6 +62,26 @@
 	width: 50px;
 }
 
+.btnEdit{
+    padding: 8px 16px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btnEdit:hover {
+    background-color: #2980b9;  
+}
+
+.btnEdit:focus{
+	outline: none;
+	
+}
+
+
 .select select {
   padding: 7px 40px 7px 7px;
   width: 100%;
