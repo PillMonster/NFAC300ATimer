@@ -100,6 +100,13 @@ public class TestResultDaoImpl implements TestResultDao{
 		);
 	}
 	
+	@Override
+	public int updateTestMessage(int id, String testMessage) {
+		
+		return jdbcTemplate.update(
+				"update testResult set testMessage=? where id=?",
+				testMessage, id);
+	}
 	
 	/*@Override
 	public List<TestResult> findByMultiple(String productType, String poleNum, String ammeter, String testPerson, String result, String startDateTime, String endDateTime) {

@@ -14,4 +14,5 @@ public interface TestResultService {
 	List<TestResult> findTestResult(List<String>productTypeList, List<String>poleNumList, List<String>ammeterList, 
 									List<String>testPersonList, List<String>resultList, 
 									String startDateTime, String endDateTime);
+	int updateTestMessage(int id, String testMessage);
 }

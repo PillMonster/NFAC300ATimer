@@ -79,6 +79,11 @@ public class TestResultServiceImpl implements TestResultService{
 											resultSerial, startDateTime, endDateTime);
 	}
 	
+	@Override
+	public int updateTestMessage(int id, String testMessage) {
+		return testResultDao.updateTestMessage(id, testMessage);
+	}
+	
 	public String addQuoteAndComma(List<String> inputList){
 		
 		List<String> quoteList = new ArrayList<>();

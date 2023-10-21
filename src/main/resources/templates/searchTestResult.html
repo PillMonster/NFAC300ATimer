@@ -117,9 +117,8 @@
 	var testPersonList = new Array(); // 建立初始陣列, 存放每一個試驗人員
 	var finishedTestDateList = new Array();; // 建立初始變數, 存放試驗日期
 	
-	
-	
-	
+	var id = "";
+		
 	//AJAX向後端發送請求及接收重後端來的資料(此ajax方法為取得機種、安培數、試驗人員、完成日期的陣列)
 	$.ajax({
 	    type:"GET",//請求方式
@@ -153,7 +152,7 @@
 	//自訂submitForm()方法, 利用ajax的serialize()方法, 可將表單內容送到後端
 	function submitForm() {
 		//var formData = $("#myForm").serialize(); // $("#myForm") ->取得表單元素id的值, serialize() ->並將其序列化轉為字串
-		//console.log(formData);
+
 		var jsonString = getChecked(); // 取得選取後的json資料
 		console.log(jsonString);
 
@@ -295,7 +294,7 @@
     		innerTable += "<td>" + formatDate(new Date(data[i].finishedTestTime)) + "</td>";
     		innerTable += "<td>" + data[i].testMessage + "</td>";
     		//innerTable += "<td>" + "<button class='edit-button' id='showPopup' data-id='" + data[i].id + "' data-text='" + data[i].testMessage + "' onclick='popupToEdit()'>編輯</button></td>";
-    		innerTable += "<td>" + "<button class='edit-button' id='showPopup' data-id=" + data[i].id + " data-text=" + data[i].testMessage + " onclick='popupToEdit()'>編輯</button></td>";
+    		innerTable += "<td>" + "<button class='edit-button' id='showPopup' data-id=" + data[i].id + " data-text='" + data[i].testMessage + "' onclick='popupToEdit()'>編輯</button></td>";
     	}
     	innerTable += "</tr>";
     	innerTable += "</tbody>";
@@ -394,10 +393,11 @@
 		*/
     	$(document).on('click', '.edit-button', function(e) { 
     		
-    		var id = $(this).data("id"); // this當前觸發的元素, 亦即當前被點擊的按鈕, 從html元素中獲取data-id屬性的值
+    		id = $(this).data("id"); // this當前觸發的元素, 亦即當前被點擊的按鈕, 從html元素中獲取data-id屬性的值
     		var testMessage = $(this).data("text"); // this當前觸發的元素, 亦即當前被點擊的按鈕, 從html元素中獲取data-text屬性的值
     		console.log(id);
     		console.log(testMessage);
+    		console.log($(this).data());
     		
     		document.getElementById('remark').value = testMessage; // 將testMessage傳到textarea
     		popup.style.display = 'block'; // 顯示彈窗
@@ -412,7 +412,35 @@
     	
     	var remark = document.getElementById('remark').value; // 獲取文字視窗(textarea)元素內的值
     	popup.style.display = 'none'; // 關閉彈窗
-    	console.log(remark);
+    	//console.log("id: " + id + ", text: " + remark);
+    	
+    	// ========== 從將陣列資料,以key-value方式放入rowData ==========
+    	var jsonArray = new Array(); // 建立初始陣列, 存放待轉成 json 格式的Array
+	  	var rowData = { // key開頭不能為大寫, 否則後端接收會為null
+			'id': id,
+			'testMessage': remark,
+		};
+		jsonArray.push(rowData); // 將整理好的資料放入jsonArray
+		
+		var jsonString = JSON.stringify(jsonArray); // 轉成 json 格式   	
+    	
+    	$.ajax({
+			url: "./viewjsonUpdateText",
+		  	type: 'POST',
+		  	contentType: "application/json;charset=UTF-8", // 後端如果要以List接收, 這行必須要開
+		  	async:false, // false為非同步, 按照程式碼順序往下執行
+		  	dataType:"json", // 接收資料格式 (後端需有標註@ResponseBody的方法)
+		  	data:  jsonString, // 指定資料傳到後端
+		  	success: function(message) {
+		  		console.log(message);
+		  		
+		  	},
+		  	error: function(xhr, status, error) {
+			}
+		});	
+    	
+    	submitForm(); // 更新表格內容
+    	
     });
     
     

@@ -12,4 +12,5 @@ public interface TestResultDao {
 	String findTestDate();
 	List<TestResult> findByMultiple(String productTypeSerial, String poleNumSerial, String ammeterSerial,
 									String testPersonSerial, String resultSerial, String startDateTime, String endDateTime);
+	int updateTestMessage(int id, String testMessage);
 }

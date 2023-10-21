@@ -103,6 +103,25 @@ public class TestResultController {
 		return testResultList;
 	}
 	
+	@PostMapping(value = "/viewjsonUpdateText")
+	@ResponseBody
+	public String jsonUpdateText(@RequestBody List<TestResult> testResult){
+				
+		for (TestResult jsonData : testResult) {
+            int id = jsonData.getId();
+            String testMessage = jsonData.getTestMessage();
+            
+            System.out.println("id: " + id + ", testMessage: " + testMessage);
+            int updateResult = testResultService.updateTestMessage(id, testMessage);
+            
+            if (updateResult == 1) {
+            	System.out.println("備註更新成功!");
+            }
+		}
+		return "更新成功!";
+		
+	}
+	
 	
 	@GetMapping("/searchTestResult")
 	public String showTestingPage() {	
