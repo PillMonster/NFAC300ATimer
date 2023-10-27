@@ -76,7 +76,7 @@ public class TimerDaoImpl implements TimerDao{
 
 	@Override
 	public List<TestResult> findAll(){
-		return this.jdbcTemplate.query("select * from testResult", 
+		return this.jdbcTemplate.query("SELECT TOP 10 * FROM testResult ORDER BY finishedTestTime DESC", 
 				(rs, rowNum) -> new TestResult(  // 使用lambda方法
 						rs.getInt("id"),
 						rs.getString("productType"),

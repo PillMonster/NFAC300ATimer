@@ -1,44 +1,32 @@
-.leftDiv{
+/* ========== 
+container styles 
+ ==========*/
+
+.leftDiv{ /* 元件container */ 
 	float:left;
-	width: 18%;
-	padding: 5px 10px 5px 10px;
-	margin: 10px 0px 0px 0px;
+	width: 15%;
+	height: 90%;
+	padding: 5px 10px 5px 10px; /* 上 右 下 左 */
+	margin: 10px 0px 0px 10px; /* 上 右 下 左 */
+	
+	background-color: #B0C4DE; /* 设置容器的背景颜色 */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
 }
 
-.rightDiv{
+.rightDiv{  /* 表格container */ 
 	float:right;
-	width: 80%;
-	padding: 0px 0px 0px 0px;
-	margin:10px 0px 0px 0px;
-}
-
-.submit-button{
-	background-color:#228B22;
-	color: white;
-	font-weight:bold;
-	font-size:16px;
-	text-align:center;
-	padding: 10px 24px;
-	border-width:1px;
-	border-color:#9cf #159 #159 #9cf;
-
-}
-
-.clean-button{
-	background-color:#20B2AA;
-	color: white;
-	font-weight:bold;
-	font-size:16px;
-	text-align:center;
-	padding: 10px 24px;
-	border-width:1px;
-	border-color:#9cf #159 #159 #9cf;
-
+	width: 82%;
+	padding: 0px 0px 0px 0px; /* 上 右 下 左 */
+	margin:10px 0px 0px 0px; /* 上 右 下 左 */
 }
 
 
-.edit-button{
+/* ========== 
+button styles 
+ ==========*/
+.edit-button{ /* 表格的編輯按鈕 */
 	background-color:#008CBA;
 	color:white;
 	font-weight:bold;
@@ -50,19 +38,7 @@
 	width: 50px;
 }
 
-.delete-button{
-	background-color:#f44336;
-	color:white;
-	font-weight:bold;
-	font-size:14px;
-	text-align:center;
-	padding: 3px 5px;
-	border-width:1px;
-	border-color:#9cf #159 #159 #9cf;
-	width: 50px;
-}
-
-.btnEdit{
+.btnEdit{ /* 小視窗的編輯按鈕 */
     padding: 8px 16px;
     background-color: #3498db;
     color: #fff;
@@ -77,50 +53,13 @@
 }
 
 .btnEdit:focus{
-	outline: none;
-	
+	outline: none;	
 }
 
 
-.select select {
-  padding: 7px 40px 7px 7px;
-  width: 100%;
-  border: 1px solid #868687;
-  border-radius: 5px;
-  background: #fff;
-  box-shadow: 0 1px 3px -2px #9098a9;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 16px;
-  transition: all 150ms ease;
-}
-.select select:required:invalid {
-  color: #5a667f;
-}
-.select select option {
-  color: #223254;
-}
-.select select option[value=""][disabled] {
-  display: none;
-}
-.select select:focus {
-  outline: none;
-  border-color: #07f;
-  box-shadow: 0 0 0 2px rgba(0,119,255,0.2);
-}
-.select select:hover + svg {
-  stroke: #07f;
-}
-
-.sprites {
-  position: absolute;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-  user-select: none;
-}
-
-
+/* ========== 
+table styles 
+ ==========*/
 .styled-table {
     border-collapse: collapse;
     margin-left: auto; 
@@ -138,13 +77,14 @@
     color: #ffffff;
     text-align: center;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .styled-table th,
 .styled-table td {
-    padding: 10px 5px;
+    padding: 5px 5px;
     text-align: center;
+    font-size: 16px;
 }
 
 .styled-table tbody tr {
@@ -166,31 +106,6 @@
 
 header, footer {
   white-space: nowrap;
-}
-
-.select-table {
-  border: 1px solid  #ccc; /* 可选：添加边框以可视化容器 */
-  width: 100%;
-  overflow-y: auto;
-}
-
-.widgets-table {
-  border: 1px solid  #ccc; /* 可选：添加边框以可视化容器 */
-  width: 100px;
-  overflow-y: auto;
-}
-
-
-/* ========== 
-Chart styles 
- ==========*/
-.chart-container {
-	margin-top: 10px;
-	padding: 0px 0px;
-	float:left;
-	text-align: center;
-	width:100%;
-	max-width:500px;	
 }
 
 
@@ -227,3 +142,50 @@ Chart styles
     background-color: red; /* 鼠标悬停时的背景颜色 */
 	color: white; /* 文本颜色 */   
 }
+
+/* ==========
+單選扭及日曆元件 
+  ==========*/
+.checkbox-group { /* 單選鈕群組 */
+	/*border: 1px solid  #ccc; /* 可选：添加边框以可视化容器 */
+	background-color: #f2f2f2; /* 设置背景颜色 */
+    padding: 0px 10px 5px 10px; /* 上 右 下 左 */ /* 添加一些内边距以增加质感 */
+    border-radius: 5px; /* 圆角边框以增加质感 */
+    margin-bottom: 5px; /* 增加下边距以分隔不同的组 */
+}
+
+.checkbox-group-title { /* 單選鈕群組內的標題 */
+    font-size: 20px;
+    display: block;
+    margin-bottom: 5px; 
+}
+
+.checkbox-group label { /* 單選鈕群組內的子項內容 */
+    font-size: 18px;
+    display: block;
+    margin-bottom: 0px; 
+    /*border: 1px solid  #ccc; /* 可选：添加边框以可视化容器 */
+}
+
+.checkbox-group input[type="checkbox"] {  /* 每一組內各的檢核按扭 */
+    margin-right: 5px;
+    float: left;
+}
+
+
+.datepicker { /* 日曆元件css */
+    margin-top: 20px; /* 將日期選擇器置於文字下方 */
+    background-color: #f2f2f2; /* 设置背景颜色 */
+    padding: 0px 5px 5px 5px; /* 上 右 下 左 */ /* 添加一些内边距以增加质感 */
+    border-radius: 5px; /* 圆角边框以增加质感 */
+    margin-bottom: 0px; /* 增加下边距以分隔不同的组 */
+}
+ 
+
+.datepicker input[type="date"] {
+    padding: 3px; /* 調整日期選擇器的內容大小 */
+    font-size: 16px; /* 調整日期選擇器的字號 */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 44%; /* 縮短日期選擇器的寬度 */
+} 

@@ -1,0 +1,79 @@
+/*--------------------------------------------------------------
+# Header
+--------------------------------------------------------------*/
+/*a{text-decoration:none;}
+a:link{
+	color:#000;
+}
+a:visited {
+	color:#ffffff;
+	background-color:red;
+}
+a:hover {
+	text-decoration:underline;
+	background-color:#fafafa;
+	color:gray;
+}
+a:active {
+	text-decoration:none;
+	background-color:gray;
+	color:#fafafa;
+}
+*/
+/* 重置一些默認樣式 */
+body, ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  /*background: #333333; /* 使用灰黑深色系列的背景 */
+  background: #B0C4DE;;
+  padding: 0px;
+
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 添加陰影效果 */
+  border-radius: 5px; /* 添加圓角效果 */
+  display: flex; /* 使用 Flexbox 佈局 */
+  justify-content: space-between; /* 將元素分散對齊，使標誌和導航在一行內 */
+  align-items: center; /* 將元素垂直居中對齊 */
+  height: 40px;
+}
+
+.logo h1 {
+  font-size: 30px;
+}
+
+nav {
+  margin-top: 0px;
+  padding: 0px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex; /* 使用 Flexbox 佈局 */
+  padding: 5px;
+}
+
+nav ul li {
+  margin-right: 20px;
+  padding: 0px;
+}
+
+nav ul li:last-child {
+  margin-right: 0; /* 移除最後一個選單項目的右邊距 */
+}
+
+nav ul li a {
+  background: #F0F8FF;
+  color: #000000; /* 文字顏色改為白色 */
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 3px; /* 添加圓角效果，使連結看起來更具互動性 */
+  border: 2px solid transparent; /* 添加邊框並預設為透明 */
+  transition: border-color 0.3s ease-in-out; /* 添加過渡效果 */
+}
+
+nav ul li a:hover {
+  background-color: #ff8c00; /* 滑鼠懸停時的背景顏色為橘黃色 */
+  border-color: #ff8c00; /* 滑鼠懸停時的邊框顏色為橘黃色 */
+}

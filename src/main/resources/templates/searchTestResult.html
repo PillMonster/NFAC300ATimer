@@ -5,14 +5,60 @@
 	<title>NF AC300A test result</title>
 	<script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="/css/testResultStyle.css">
+
+	
 </head>
 
 <body>
 
+<div id="header"></div>
+
 <div class="leftDiv">
 
-	<form id="myForm"  onsubmit="return false;" method="post">
+	<form id="myForm" onsubmit="return false;" method="post">
+		
+		<div class="checkbox-group">
+            <p class="checkbox-group-title">機種:</p>
+			<div id="productDiv"></div>
+        </div>
+        
+        <div class="checkbox-group">
+        	<p class="checkbox-group-title">極數:</p>
+        	<div id="poleNumDiv">
+				<label><input type="checkbox" id="poleNumSelectAll" value="全選" onchange="toggleCheckboxes('poleNum', 'poleNumSelectAll'); submitForm();">全選</label>
+				<label><input type="checkbox" name="poleNum" value="2P" onchange="checkSelectAll('poleNum', 'poleNumSelectAll'); submitForm();" checked>2P</label>
+				<label><input type="checkbox" name="poleNum" value="3P" onchange="checkSelectAll('poleNum', 'poleNumSelectAll'); submitForm();">3P</label>
+				<label><input type="checkbox" name="poleNum" value="4P" onchange="checkSelectAll('poleNum', 'poleNumSelectAll'); submitForm();">4P</label>
+			</div>
+		</div>
 
+		
+		<div class="checkbox-group">
+			<p class="checkbox-group-title">安培數:</p>
+			<div id="ammeterDiv"></div>
+		</div>
+		
+		<div class="checkbox-group">
+			<p class="checkbox-group-title">試驗人員:</p>
+			<div id="testPersonDiv"></div>
+		</div>
+		
+		<div class="checkbox-group">
+			<p class="checkbox-group-title">結果:</p>
+			<div id="resultDiv">
+				<label><input type="checkbox" id="resultSelectAll" value="全選" onchange="toggleCheckboxes('result', 'resultSelectAll'); submitForm();">全選</label>
+				<label><input type="checkbox"  name="result" id="resultPass" value="合格" onchange="checkSelectAll('result', 'resultSelectAll'); submitForm()" checked/>合格</label>
+				<label><input type="checkbox" name="result" id="resultFail" value="不合格" onchange="checkSelectAll('result', 'resultSelectAll'); submitForm()"/>不合格</label>
+			</div>
+		</div>
+		
+		<div class="datepicker">
+			<p class="checkbox-group-title">試驗日期:</p>
+			<input type="date" id="startDateSelected" name="start-date" onchange="submitForm()"> ~ 
+			<input type="date" id="endDateSelected" name="end-date" onchange="submitForm()">
+		</div>
+		
+		<!--  
 		<table class="select-table">
 			
 			<tr>
@@ -84,7 +130,7 @@
 			</tr>
 			
 
-		</table>
+		</table> -->
 		
 		<!--  <input type="submit" value="搜尋"><br>-->
 
@@ -109,6 +155,10 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
+		$.get("/header.html", function(data) {
+		  	$("#header").html(data);
+		});
+		
 		submitForm();
 	});
 	
@@ -305,11 +355,11 @@
 	// ========== 產生checkbox的內容 ==========
 	function innerProduct(){
 		var inner = ""; // 建立空變數, 存放所選取的值>
-		inner = "<label><input type='checkbox' id='productSelectAll' value='全選' onchange='toggleCheckboxes(\"productType\", \"productSelectAll\"); submitForm();'>全選</label><br>";
+		inner = "<label><input type='checkbox' id='productSelectAll' value='全選' onchange='toggleCheckboxes(\"productType\", \"productSelectAll\"); submitForm();'>全選</label>";
 		
 		for(var i=0; i<productTypeList.length; i++){
 			inner = inner + "<label><input type='checkbox' name='productType' value='" + productTypeList[i] + "' onchange='checkSelectAll(\"productType\", \"productSelectAll\"); submitForm();'>"
-						  +  productTypeList[i] + "</label><br>";
+						  +  productTypeList[i] + "</label>";
 		}
 		var productDiv = document.getElementById("productDiv"); // 取得機種div元素
 		productDiv.innerHTML = inner; // 傳進 HTML 裡進行渲染
@@ -320,12 +370,12 @@
 	
 	function innerAnneter(){
 		var inner = ""; // 建立空變數, 存放所選取的值>
-		inner = "<label><input type='checkbox' id='ammeterSelectAll' value='全選' onchange='toggleCheckboxes(\"ammeter\", \"ammeterSelectAll\"); submitForm();'>全選</label><br>";
+		inner = "<label><input type='checkbox' id='ammeterSelectAll' value='全選' onchange='toggleCheckboxes(\"ammeter\", \"ammeterSelectAll\"); submitForm();'>全選</label>";
 		
 		for(var i=0; i<ammeterList.length; i++){
 			//inner = inner + "<option value=" + "'" + ammeterList[i] + "'"  + ">" + ammeterList[i] + "</option>";
 			inner = inner + "<label><input type='checkbox' name='ammeter' value='" + ammeterList[i] + "' onchange='checkSelectAll(\"ammeter\", \"ammeterSelectAll\"); submitForm();'>"
-						  + ammeterList[i] + "</label><br>";
+						  + ammeterList[i] + "</label>";
 		}
 		
 		var ammeterDiv = document.getElementById("ammeterDiv"); // 取得安培數div元素
@@ -336,12 +386,12 @@
 	
 	function innerTestPerson(){
 		var inner = ""; // 建立空變數, 存放所選取的值>
-		inner = "<label><input type='checkbox' id='testPersonSelectAll' value='全選' onchange='toggleCheckboxes(\"testPerson\", \"testPersonSelectAll\");  submitForm();'>全選</label><br>";
+		inner = "<label><input type='checkbox' id='testPersonSelectAll' value='全選' onchange='toggleCheckboxes(\"testPerson\", \"testPersonSelectAll\");  submitForm();'>全選</label>";
 		
 		for(var i=0; i<testPersonList.length; i++){
 			//inner = inner + "<option value=" + "'" + testPersonList[i] + "'"  + ">" + testPersonList[i] + "</option>";
 			inner = inner + "<label><input type='checkbox' name='testPerson' value='" + testPersonList[i] + "' onchange='checkSelectAll(\"testPerson\", \"testPersonSelectAll\"); submitForm();'>"
-						  + testPersonList[i] + "</label><br>";
+						  + testPersonList[i] + "</label>";
 		}
 		var testPersonDiv = document.getElementById("testPersonDiv"); // 取得試驗人員div元素
 		testPersonDiv.innerHTML = inner; //傳進 HTML 裡進行渲染

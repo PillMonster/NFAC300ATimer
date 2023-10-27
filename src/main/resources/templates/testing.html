@@ -8,6 +8,9 @@
 </head>
 
 <body>
+
+<div id="header"></div>
+
 <div class="testA-div-container">
 	<h3 class="titleInfo-div-container">A座</h3>
 	<div class="testInfo-div-container">
@@ -88,6 +91,12 @@
 </div>
 
 <script type="text/javascript">
+
+	$(document).ready(function() {
+		$.get("/header.html", function(data) {
+		  	$("#header").html(data);
+		});
+	});
 	
 	var sentMessage = "";
 	
