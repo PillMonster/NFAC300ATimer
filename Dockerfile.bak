@@ -3,3 +3,4 @@ FROM openjdk:11-jre-slim
 WORKDIR /app
 COPY target/NFAC300ATimer.jar /app/NFAC300ATimer.jar
 ENTRYPOINT ["java","-jar","NFAC300ATimer.jar"]
+USER root
