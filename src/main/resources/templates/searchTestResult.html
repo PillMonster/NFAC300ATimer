@@ -5,7 +5,6 @@
 	<title>NF AC300A test result</title>
 	<script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="/css/testResultStyle.css">
-
 	
 </head>
 
@@ -127,8 +126,7 @@
 			        <input type="date" id="startDateSelected" name="start-date" onchange="submitForm()"> ~ 
 			        <input type="date" id="endDateSelected" name="end-date" onchange="submitForm()">
 				</td>
-			</tr>
-			
+			</tr>		
 
 		</table> -->
 		
@@ -168,7 +166,7 @@
 	var finishedTestDateList = new Array();; // 建立初始變數, 存放試驗日期
 	
 	var id = "";
-		
+	
 	//AJAX向後端發送請求及接收重後端來的資料(此ajax方法為取得機種、安培數、試驗人員、完成日期的陣列)
 	$.ajax({
 	    type:"GET",//請求方式
