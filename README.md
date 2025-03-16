@@ -9,7 +9,8 @@
 3.	撰寫Java程式語言建置網站，可即時存取資料庫，取得產品規格、試驗秒數及試驗狀態，傳至前端網頁畫面及發送Line訊息。
 4.	改善後，使用者可於電腦網頁上，隨時查看當前試驗秒數、試驗狀態及歷史資料。
 5.	改善後，使用者可於手機Line中，隨時收到105%及130%試驗完成通知及試驗秒數。
-   圖片路徑：https://github.com/PillMonster/NFAC300ATimer/tree/master/figure
+
+  	圖片路徑：https://github.com/PillMonster/NFAC300ATimer/tree/master/figure
 
 效益：
 導入測試機台自動化通報系統，每月節省約4000元人力成本。
