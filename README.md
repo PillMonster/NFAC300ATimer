@@ -12,6 +12,7 @@
    
 圖片路徑：
 https://github.com/PillMonster/NFAC300ATimer/tree/master/figure
+
 效益：
 導入測試機台自動化通報系統，每月節省約4000元人力成本。
 
